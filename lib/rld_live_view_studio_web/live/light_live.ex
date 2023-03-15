@@ -12,7 +12,7 @@ defmodule RldLiveViewStudioWeb.LightLive do
     # Inspect socket
     # IO.inspect(socket, label: "mount")
     # Inspect the pid
-    IO.inspect(self(), label: "MOUNT")
+    # IO.inspect(self(), label: "MOUNT")
     {:ok, socket}
   end
 
@@ -47,9 +47,9 @@ defmodule RldLiveViewStudioWeb.LightLive do
   def handle_event("on", _params, socket) do
     socket = assign(socket, brightness: 100)
 
-    IO.inspect(self(), label: "on")
-
-    raise "🚀"
+    # IO.inspect(self(), label: "on")
+    # raise a rocket for test the reset pid
+    # raise "🚀"
     {:noreply, socket}
   end
 
