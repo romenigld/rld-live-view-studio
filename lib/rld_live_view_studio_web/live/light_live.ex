@@ -7,6 +7,7 @@ defmodule RldLiveViewStudioWeb.LightLive do
         brightness: 10
       )
 
+    # IO.inspect(socket, label: "mount")
     {:ok, socket}
   end
 
@@ -25,7 +26,7 @@ defmodule RldLiveViewStudioWeb.LightLive do
       <button phx-click="down">
         <img src="/images/down.svg" />
       </button>
-      <button phx-click="rando">
+      <button phx-click="random">
         <img src="/images/fire.svg" />
       </button>
       <button phx-click="up">
@@ -45,6 +46,7 @@ defmodule RldLiveViewStudioWeb.LightLive do
 
   def handle_event("off", _params, socket) do
     socket = assign(socket, brightness: 0)
+    ## IO.inspect(socket, label: "off")
     {:noreply, socket}
   end
 
@@ -64,12 +66,13 @@ defmodule RldLiveViewStudioWeb.LightLive do
     {:noreply, socket}
   end
 
-  def handle_event("rando", _params, socket) do
+  def handle_event("random", _params, socket) do
     socket =
       assign(socket,
         brightness: Enum.random(0..100)
       )
 
+    # IO.inspect(socket, label: "random")
     {:noreply, socket}
   end
 end
