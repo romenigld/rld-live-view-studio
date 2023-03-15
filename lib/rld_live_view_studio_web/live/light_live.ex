@@ -7,6 +7,8 @@ defmodule RldLiveViewStudioWeb.LightLive do
         brightness: 10
       )
 
+    # Alternatively, if you know that you'll only need to assign one key/value pair, then you can call the assign/3 function
+    # assign(socket, :brightness, 10)
     # IO.inspect(socket, label: "mount")
     {:ok, socket}
   end
