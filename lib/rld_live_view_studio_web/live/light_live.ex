@@ -50,14 +50,14 @@ defmodule RldLiveViewStudioWeb.LightLive do
       update(
         socket,
         :brightness,
-        &max(&1 - 1, 0)
+        &max(&1 - 10, 0)
       )
 
     {:noreply, socket}
   end
 
   def handle_event("up", _params, socket) do
-    socket = update(socket, :brightness, &min(&1 + 1, 100))
+    socket = update(socket, :brightness, &min(&1 + 10, 100))
     {:noreply, socket}
   end
 end
