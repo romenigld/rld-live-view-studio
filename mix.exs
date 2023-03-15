@@ -52,7 +52,8 @@ defmodule RldLiveViewStudio.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:faker, "~> 0.17"},
-      {:number, "~> 1.0"}
+      {:number, "~> 1.0"},
+      {:timex, "~> 3.7"}
     ]
   end
 
