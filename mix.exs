@@ -51,7 +51,8 @@ defmodule RldLiveViewStudio.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:faker, "~> 0.17"}
+      {:faker, "~> 0.17"},
+      {:number, "~> 1.0"}
     ]
   end
 
