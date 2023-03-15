@@ -7,6 +7,12 @@ defmodule RldLiveViewStudioWeb.LightLive do
         brightness: 10
       )
 
+    # Alternatively, if you know that you'll only need to assign one key/value pair, then you can call the assign/3 function
+    # assign(socket, :brightness, 10)
+    # Inspect socket
+    # IO.inspect(socket, label: "mount")
+    # Inspect the pid
+    # IO.inspect(self(), label: "MOUNT")
     {:ok, socket}
   end
 
@@ -25,6 +31,9 @@ defmodule RldLiveViewStudioWeb.LightLive do
       <button phx-click="down">
         <img src="/images/down.svg" />
       </button>
+      <button phx-click="random">
+        <img src="/images/fire.svg" />
+      </button>
       <button phx-click="up">
         <img src="/images/up.svg" />
       </button>
@@ -37,11 +46,43 @@ defmodule RldLiveViewStudioWeb.LightLive do
 
   def handle_event("on", _params, socket) do
     socket = assign(socket, brightness: 100)
+
+    # IO.inspect(self(), label: "on")
+    # raise a rocket for test the reset pid
+    # raise "🚀"
     {:noreply, socket}
   end
 
   def handle_event("off", _params, socket) do
     socket = assign(socket, brightness: 0)
+    ## IO.inspect(socket, label: "off")
+    {:noreply, socket}
+  end
+
+  def handle_event("down", _params, socket) do
+    socket =
+      update(
+        socket,
+        :brightness,
+        &max(&1 - 10, 0)
+      )
+
+    {:noreply, socket}
+  end
+
+  def handle_event("up", _params, socket) do
+    socket = update(socket, :brightness, &min(&1 + 10, 100))
+    # IO.inspect(self(), label: "UP")
+    {:noreply, socket}
+  end
+
+  def handle_event("random", _params, socket) do
+    socket =
+      assign(socket,
+        brightness: Enum.random(0..100)
+      )
+
+    # IO.inspect(socket, label: "random")
     {:noreply, socket}
   end
 end
