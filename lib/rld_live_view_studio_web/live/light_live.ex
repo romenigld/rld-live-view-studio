@@ -9,7 +9,10 @@ defmodule RldLiveViewStudioWeb.LightLive do
 
     # Alternatively, if you know that you'll only need to assign one key/value pair, then you can call the assign/3 function
     # assign(socket, :brightness, 10)
+    # Inspect socket
     # IO.inspect(socket, label: "mount")
+    # Inspect the pid
+    IO.inspect(self(), label: "MOUNT")
     {:ok, socket}
   end
 
@@ -43,6 +46,10 @@ defmodule RldLiveViewStudioWeb.LightLive do
 
   def handle_event("on", _params, socket) do
     socket = assign(socket, brightness: 100)
+
+    IO.inspect(self(), label: "on")
+
+    raise "🚀"
     {:noreply, socket}
   end
 
@@ -65,6 +72,7 @@ defmodule RldLiveViewStudioWeb.LightLive do
 
   def handle_event("up", _params, socket) do
     socket = update(socket, :brightness, &min(&1 + 10, 100))
+    # IO.inspect(self(), label: "UP")
     {:noreply, socket}
   end
 
