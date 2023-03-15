@@ -50,7 +50,7 @@ defmodule RldLiveViewStudioWeb.LightLive do
       update(
         socket,
         :brightness,
-        &(&1 - 1)
+        &max(&1 - 1, 0)
       )
 
     {:noreply, socket}
