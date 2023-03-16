@@ -20,6 +20,9 @@ defmodule RldLiveViewStudioWeb.LightLive do
     ~H"""
     <h1>Front Porch Light</h1>
     <div id="light">
+      <form phx-change="update">
+        <input type="range" min="0" max="100" name="brightness" value={@brightness} />
+      </form>
       <div class="meter">
         <span style={"width: #{@brightness}%"}>
           <%= @brightness %>%
@@ -84,5 +87,9 @@ defmodule RldLiveViewStudioWeb.LightLive do
 
     # IO.inspect(socket, label: "random")
     {:noreply, socket}
+  end
+
+  def handle_event("update", %{"brightness" => brightness_params}, socket) do
+    {:noreply, assign(socket, brightness: String.to_integer(brightness_params))}
   end
 end
