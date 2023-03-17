@@ -4,7 +4,8 @@ defmodule RldLiveViewStudioWeb.LightLive do
   def mount(_params, _session, socket) do
     socket =
       assign(socket,
-        brightness: 10
+        brightness: 10,
+        temp: "3000"
       )
 
     # Alternatively, if you know that you'll only need to assign one key/value pair, then you can call the assign/3 function
@@ -21,7 +22,7 @@ defmodule RldLiveViewStudioWeb.LightLive do
     <h1>Front Porch Light</h1>
     <div id="light">
       <div class="meter">
-        <span style={"width: #{@brightness}%"}>
+        <span style={"width: #{@brightness}%; background: #{temp_color(@temp)}"}>
           <%= @brightness %>%
         </span>
       </div>
@@ -40,8 +41,32 @@ defmodule RldLiveViewStudioWeb.LightLive do
       <button phx-click="on">
         <img src="/images/light-on.svg" />
       </button>
+
+      <form phx-change="change-temp">
+        <div class="temps">
+          <%= for temp <- ["3000", "4000", "5000"] do %>
+            <div>
+              <input type="radio" id={temp} name="temp" value={temp} checked={@temp == temp} />
+              <label for={temp}><%= temp %></label>
+            </div>
+          <% end %>
+        </div>
+      </form>
+
+      <form phx-change="update">
+        <input type="range" min="0" max="100" name="brightness" value={@brightness} />
+      </form>
     </div>
     """
+  end
+
+  def handle_event("change-temp", %{"temp" => temp}, socket) do
+    socket =
+      assign(socket,
+        temp: temp
+      )
+
+    {:noreply, socket}
   end
 
   def handle_event("on", _params, socket) do
@@ -85,4 +110,12 @@ defmodule RldLiveViewStudioWeb.LightLive do
     # IO.inspect(socket, label: "random")
     {:noreply, socket}
   end
+
+  def handle_event("update", %{"brightness" => brightness_params}, socket) do
+    {:noreply, assign(socket, brightness: String.to_integer(brightness_params))}
+  end
+
+  defp temp_color("3000"), do: "#F1C40D"
+  defp temp_color("4000"), do: "#FEFF66"
+  defp temp_color("5000"), do: "#99CCFF"
 end
