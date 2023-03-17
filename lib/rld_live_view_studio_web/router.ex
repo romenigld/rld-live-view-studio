@@ -21,6 +21,7 @@ defmodule RldLiveViewStudioWeb.Router do
 
     live "/light", LightLive
     live "/sandbox", SandboxLive
+    live "/sales", SalesLive
   end
 
   # Other scopes may use custom stacks.
