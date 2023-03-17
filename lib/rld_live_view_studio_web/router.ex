@@ -2,26 +2,27 @@ defmodule RldLiveViewStudioWeb.Router do
   use RldLiveViewStudioWeb, :router
 
   pipeline :browser do
-    plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, {RldLiveViewStudioWeb.Layouts, :root}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
+    plug(:accepts, ["html"])
+    plug(:fetch_session)
+    plug(:fetch_live_flash)
+    plug(:put_root_layout, {RldLiveViewStudioWeb.Layouts, :root})
+    plug(:protect_from_forgery)
+    plug(:put_secure_browser_headers)
   end
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(:accepts, ["json"])
   end
 
   scope "/", RldLiveViewStudioWeb do
-    pipe_through :browser
+    pipe_through(:browser)
 
-    get "/", PageController, :home
+    get("/", PageController, :home)
 
-    live "/light", LightLive
-    live "/sandbox", SandboxLive
-    live "/sales", SalesLive
+    live("/light", LightLive)
+    live("/sandbox", SandboxLive)
+    live("/sales", SalesLive)
+    live("/bingo", BingoLive)
   end
 
   # Other scopes may use custom stacks.
@@ -39,10 +40,10 @@ defmodule RldLiveViewStudioWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
-      pipe_through :browser
+      pipe_through(:browser)
 
-      live_dashboard "/dashboard", metrics: RldLiveViewStudioWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      live_dashboard("/dashboard", metrics: RldLiveViewStudioWeb.Telemetry)
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 end
