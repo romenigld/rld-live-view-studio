@@ -23,6 +23,8 @@ defmodule RldLiveViewStudioWeb.Router do
     live("/sandbox", SandboxLive)
     live("/sales", SalesLive)
     live("/bingo", BingoLive)
+    live("/flights", FlightsLive)
+    live("/vehicles", VehiclesLive)
   end
 
   # Other scopes may use custom stacks.
