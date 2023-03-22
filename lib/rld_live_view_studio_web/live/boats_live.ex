@@ -10,6 +10,22 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
         boats: Boats.list_boats()
       )
 
+    # not using temporary_assigns:
+    # the values of the 'Sporting' type filter
+    # Assigned boats: 36
+    # Filtered boats: 12
+    # the values of the 'Sporting' ++ ["$$"] type filter
+    # Assigned boats: 12
+    # Filtered boats: 4
+    # {:ok, socket}
+
+    # using the temporary_assigns:
+    # the values of the 'Sporting' type filter
+    # Assigned boats: 0
+    # Filtered boats: 12
+    # the values of the 'Sporting' ++ ["$$"] type filter
+    # Assigned boats: 0
+    # Filtered boats: 4
     {:ok, socket, temporary_assigns: [boats: []]}
   end
 
@@ -72,6 +88,9 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
     filter = %{type: type, prices: prices}
 
     boats = Boats.list_boats(filter)
+
+    IO.inspect(length(socket.assigns.boats), label: "Assigned boats")
+    IO.inspect(length(boats), label: "Filtered boats")
 
     {:noreply, assign(socket, boats: boats, filter: filter)}
   end
