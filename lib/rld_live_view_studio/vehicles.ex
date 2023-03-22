@@ -21,7 +21,6 @@ defmodule RLdLiveViewStudio.Vehicles do
     |> Enum.map(& &1.make_model)
     |> Enum.uniq()
     |> Enum.filter(&has_prefix?(&1, prefix))
-    |> dbg()
   end
 
   defp has_prefix?(make, prefix) do

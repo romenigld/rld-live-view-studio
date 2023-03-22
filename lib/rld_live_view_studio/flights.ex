@@ -1,11 +1,18 @@
 defmodule RldLiveViewStudio.Flights do
   def search_by_airport(airport) do
-    Process.sleep(4000)
+    Process.sleep(1000)
 
-    list_flights()
-    |> Enum.filter(
-      &(&1.origin == String.upcase(airport) || &1.destination == String.upcase(airport))
-    )
+    # for use with the 'suggest' <form phx-submit="search" phx-change="suggest">
+    # list_flights()
+    # |> Enum.filter(
+    #   &(&1.origin == String.upcase(airport) || &1.destination == String.upcase(airport))
+    # )
+
+    # if use the <form phx-change="search"> rather than the 'suggest'
+    Enum.filter(list_flights(), fn flight ->
+      String.starts_with?(flight.origin, String.upcase(airport)) ||
+        String.starts_with?(flight.destination, String.upcase(airport))
+    end)
   end
 
   def list_flights do

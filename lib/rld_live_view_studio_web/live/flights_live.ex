@@ -1,13 +1,15 @@
 defmodule RldLiveViewStudioWeb.FlightsLive do
   use RldLiveViewStudioWeb, :live_view
   alias RldLiveViewStudio.Flights
+  alias RldLiveViewStudio.Airports
 
   def mount(_params, _session, socket) do
     socket =
       assign(socket,
         airport: "",
         flights: [],
-        loading: false
+        loading: false,
+        matches: %{}
       )
 
     {:ok, socket}
@@ -17,7 +19,7 @@ defmodule RldLiveViewStudioWeb.FlightsLive do
     ~H"""
     <h1>Find a Flight</h1>
     <div id="flights">
-      <form phx-submit="search">
+      <form phx-change="search">
         <input
           type="text"
           name="airport"
@@ -26,12 +28,20 @@ defmodule RldLiveViewStudioWeb.FlightsLive do
           autofocus
           autocomplete="off"
           readonly={@loading}
+          list="matches"
+          phx-debounce="1000"
         />
 
         <button>
           <img src="/images/search.svg" alt="search" />
         </button>
       </form>
+
+      <datalist id="matches">
+        <option :for={{code, name} <- @matches} value={code}>
+          <%= name %>
+        </option>
+      </datalist>
 
       <div :if={@loading} class="loader">Loading...</div>
 
@@ -59,6 +69,11 @@ defmodule RldLiveViewStudioWeb.FlightsLive do
       </div>
     </div>
     """
+  end
+
+  def handle_event("suggest", %{"airport" => prefix}, socket) do
+    matches = Airports.suggest(prefix)
+    {:noreply, assign(socket, matches: matches)}
   end
 
   def handle_event("search", %{"airport" => airport}, socket) do
