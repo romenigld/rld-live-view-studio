@@ -46,7 +46,13 @@ defmodule RldLiveViewStudioWeb.LightLive do
         <div class="temps">
           <%= for temp <- ["3000", "4000", "5000"] do %>
             <div>
-              <input type="radio" id={temp} name="temp" value={temp} checked={@temp == temp} />
+              <input
+                type="radio"
+                id={temp}
+                name="temp"
+                value={temp}
+                checked={@temp == temp}
+              />
               <label for={temp}><%= temp %></label>
             </div>
           <% end %>
@@ -54,7 +60,14 @@ defmodule RldLiveViewStudioWeb.LightLive do
       </form>
 
       <form phx-change="update">
-        <input type="range" min="0" max="100" name="brightness" value={@brightness} />
+        <input
+          type="range"
+          min="0"
+          max="100"
+          name="brightness"
+          value={@brightness}
+          phx-debounce="250"
+        />
       </form>
     </div>
     """
