@@ -2253,3 +2253,76 @@ span.flatpickr-weekday {
     transform: translate3d(0, 0, 0);
   }
 }
+
+
+ /* Restaurant Menu */
+
+#menu {
+  @apply mt-8 max-w-4xl mx-auto;
+}
+#menu .products {
+  @apply my-10 grid gap-6 grid-cols-2 md:grid-cols-3;
+}
+#menu .product {
+  @apply max-w-sm rounded bg-white overflow-hidden shadow-lg;
+}
+#menu .product .emoji {
+  @apply text-center text-7xl mb-2;
+}
+
+#menu .product .content {
+  @apply px-6 py-4;
+}
+#menu .product .name {
+  @apply pb-3 text-center text-slate-900 font-bold text-xl;
+}
+
+#menu .product .price {
+  @apply pb-3 text-center text-lime-600 font-bold text-xl;
+}
+#menu .product .description {
+  @apply pb-3 text-center text-gray-400 font-bold text-sm;
+}
+#menu .product .details {
+  @apply px-2 flex justify-between items-center;
+}
+#menu .product .type {
+  @apply text-slate-700 font-semibold text-base mr-4;
+}
+#menu .product .tags {
+  @apply inline-block bg-slate-300 rounded-full px-3 py-1 text-sm font-semibold text-slate-700;
+}
+
+#menu form {
+  @apply max-w-xl mx-auto mb-4;
+}
+#menu form .filters {
+  @apply flex items-baseline justify-around;
+}
+#menu form .filters select {
+  @apply appearance-none w-1/3 bg-slate-200 border border-slate-400 text-slate-700 py-3 px-4 rounded-lg font-semibold cursor-pointer;
+}
+#menu form .filters select:focus {
+  @apply outline-none bg-slate-200 border-slate-500;
+}
+#menu form .filters .tags {
+  @apply flex;
+}
+#menu form .filters .tags input[type="checkbox"] {
+  @apply opacity-0 fixed w-0;
+}
+#menu form .filters .tags input[type="checkbox"]:checked + label {
+  @apply bg-indigo-300 border-indigo-500;
+}
+#menu form .filters .tags label {
+  @apply inline-block border-t border-b border-slate-400 bg-slate-300 py-3 px-4 text-lg font-semibold hover:bg-slate-400 hover:cursor-pointer;
+}
+#menu form .filters .tags label:first-of-type {
+  @apply border-l border-r rounded-l-lg;
+}
+#menu form .filters .tags label:last-of-type {
+  @apply border-l border-r rounded-r-lg;
+}
+#menu form .filters a {
+  @apply inline underline text-lg cursor-pointer;
+}

@@ -383,3 +383,276 @@ alias RldLiveViewStudio.Athletes.Athlete
 #   }
 #   |> Repo.insert!()
 # end
+
+# RESTAURANT LIVE MENU
+alias RldLiveViewStudio.Menu.Product
+
+%Product{
+  name: "Tomato Salad",
+  description: "tomato, onion, extra virgin olive oil",
+  image: "🍅",
+  price: "7.00",
+  type: "To Snack",
+  tags: "vegetarian"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "SALTED ANCHOVES",
+  description: "Fish antxoa...",
+  image: "🐠",
+  price: "24.00",
+  type: "To Snack",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "KNIFE CUT CARRASCO HAM",
+  description: "pork ham",
+  image: "🐷",
+  price: "26.00",
+  type: "To Snack",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "GRILLED ALISTAO PRAWN",
+  description: "prawn - 6 units.",
+  image: "🦐",
+  price: "24.00",
+  type: "To Snack",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "GRILLED ARTICHOKES",
+  description: "Artichokes",
+  image: "🥦",
+  price: "22.00",
+  type: "To Snack",
+  tags: "vegetarian"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "FISH SOUP",
+  description: "Fish with vegetables",
+  image: "🍲",
+  price: "6.50",
+  type: "To Snack",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "TXULETA RAVIOLI WITH GREEN CURRY",
+  description: "Txuleta, curry",
+  image: "🥩",
+  price: "9.00",
+  type: "To Snack",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "GRILLED HAKE AND CURRY SAUCE",
+  description: "Hake, curry",
+  image: "🐟",
+  price: "20.00",
+  type: "To Snack",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "TXULETA (T-BONE STEAK)",
+  description: "+ Piquillo peppers - 9.00 €",
+  image: "🍖",
+  price: "60.00",
+  type: "Grill",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "SHOULDER OF SUCKLING LAMB",
+  description: "Lamb",
+  image: "🐑",
+  price: "42.00",
+  type: "Grill",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "CARABINERO PAELLA",
+  description: "2 pax or more",
+  image: "🥘",
+  price: "65.00",
+  type: "Grill",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "RABBIT PAELLA",
+  description: "2 pax or more",
+  image: "🐇",
+  price: "65.00",
+  type: "Grill",
+  tags: "carnivore"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "CHEESECAKE",
+  description: "cake with cheese",
+  image: "🍰",
+  price: "7.00",
+  type: "Dessert",
+  tags: "dessert"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "CHEESEBOARD",
+  description: "board of cheese",
+  image: "🧀",
+  price: "16.00",
+  type: "Dessert",
+  tags: "dessert"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "ASÚA – 2017, D.O.C.A RIOJA",
+  description: "Tempranillo",
+  image: "🍷",
+  price: "22.00",
+  type: "Drinks",
+  tags: "red wines"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "LA ESCALERUELA (VIÑEDO SINGULAR) – 2020,D.O.CA RIOJA",
+  description: "Mazuelo",
+  image: "🍷",
+  price: "55.00",
+  type: "Drinks",
+  tags: "red wine"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "GAZUR – 2021, D.O. RIBERA DEL DUERO",
+  description: "Tinto Fino",
+  image: "🍷",
+  price: "21.00",
+  type: "Drinks",
+  tags: "red wine"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "CASTRO CANDAZ – 2016, D.O. RIBEIRA SACRA",
+  description: "Mencía",
+  image: "🍷",
+  price: "33.00",
+  type: "Drinks",
+  tags: "red wine"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "VALDEBARÓN – 2020,D.O.C.A RIOJA",
+  description: "Tempranillo blanco",
+  image: "🍷",
+  price: "22.00",
+  type: "Drinks",
+  tags: "white wine"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "200 MONGES RESERVA – 2010,D.O.C.A RIOJA",
+  description: "viura",
+  image: "🍷",
+  price: "70.00",
+  type: "Drinks",
+  tags: "white wine"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "TAMERÁN – 2021,D.O. GRAN CANARIA",
+  description: "malvasia volcánica",
+  image: "🍷",
+  price: "50.00",
+  type: "Drinks",
+  tags: "white wine"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "TOMÁS POSTIGO – 2014, IGP CASTILLA Y LEÓN",
+  description: "verdejo",
+  image: "🍷",
+  price: "35.00",
+  type: "Drinks",
+  tags: "white wine"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "DRAPPIER BRUT NATURE – CHAMPAGNE",
+  description: "champagne",
+  image: "🥂",
+  price: "60.00",
+  type: "Drinks",
+  tags: "other"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "KATXIÑA – 2019, D.O. GETARIAKO TXAKOLIÑA",
+  description: "Hondarribizuri",
+  image: "🍷",
+  price: "20.00",
+  type: "Drinks",
+  tags: "other"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "SIDRA – ZELAIA PREMIUM (EUSKAL SAGARDOA)",
+  description: "sidra",
+  image: "🍾",
+  price: "8.00",
+  type: "Drinks",
+  tags: "other"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "MR – 2018,D.O. MÁLAGA",
+  description: "MR - 2018",
+  image: "🍾",
+  price: "24.00",
+  type: "Drinks",
+  tags: "other"
+}
+|> Repo.insert!()
+
+%Product{
+  name: "OREMUS 2016 – HUNGRÍA",
+  description: "6,00 €/cup",
+  image: "🍾",
+  price: "60.00",
+  type: "Drinks",
+  tags: "other"
+}
+|> Repo.insert!()
