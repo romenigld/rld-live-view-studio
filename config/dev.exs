@@ -23,6 +23,7 @@ config :rld_live_view_studio, RldLiveViewStudioWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
+  server: true,
   secret_key_base: "tOu2IEpwM4GXeDF4Hj8hxZJGRVr/+SHPwtIP8FR/ArVoavchTvBevHRqzJU9Ox4p",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
