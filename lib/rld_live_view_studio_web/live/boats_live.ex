@@ -38,7 +38,6 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
       <:legal>
         <Heroicons.exclamation_circle /> Limit 1 per party
       </:legal>
-      Romenig
     </.promo>
 
     <div id="boats">
@@ -91,14 +90,16 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
       </div>
     </div>
 
-    <.promo expiration={1}>
+    <.promo>
       Hurry, only 3 boats left!
-      <:legal>
-        Excluding weekends
-      </:legal>
     </.promo>
     """
   end
+
+  attr :expiration, :integer, default: 24
+  # making :legal optional
+  slot :legal
+  slot :inner_block, required: true
 
   def promo(assigns) do
     ~H"""
