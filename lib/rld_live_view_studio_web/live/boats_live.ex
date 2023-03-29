@@ -2,6 +2,7 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
   use RldLiveViewStudioWeb, :live_view
 
   alias RldLiveViewStudio.Boats
+  import RldLiveViewStudioWeb.CustomComponents
 
   def mount(_params, _session, socket) do
     socket =
@@ -93,27 +94,6 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
     <.promo>
       Hurry, only 3 boats left!
     </.promo>
-    """
-  end
-
-  attr :expiration, :integer, default: 24
-  # making :legal optional
-  slot :legal
-  slot :inner_block, required: true
-
-  def promo(assigns) do
-    ~H"""
-    <div class="promo">
-      <div class="deal">
-        <%= render_slot(@inner_block) %>
-      </div>
-      <div class="expiration">
-        Deal expires in <%= @expiration %> hours
-      </div>
-      <div class="legal">
-        <%= render_slot(@legal) %>
-      </div>
-    </div>
     """
   end
 
