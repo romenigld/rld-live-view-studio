@@ -35,6 +35,9 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
 
     <.promo>
       Save 25% on rentals!
+      <:legal>
+        Limit 1 per party
+      </:legal>
     </.promo>
 
     <div id="boats">
@@ -89,6 +92,9 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
 
     <.promo>
       Hurry, only 3 boats left!
+      <:legal>
+        Excluding weekends
+      </:legal>
     </.promo>
     """
   end
@@ -98,6 +104,9 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
     <div class="promo">
       <div class="deal">
         <%= render_slot(@inner_block) %>
+      </div>
+      <div class="legal">
+        <%= render_slot(@legal) %>
       </div>
     </div>
     """
