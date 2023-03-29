@@ -32,6 +32,9 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
   def render(assigns) do
     ~H"""
     <h1>Daily Boat Rentals</h1>
+
+    <.promo />
+
     <div id="boats">
       <form phx-change="filter">
         <div class="filters">
@@ -79,6 +82,18 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <.promo />
+    """
+  end
+
+  def promo(assigns) do
+    ~H"""
+    <div class="promo">
+      <div class="deal">
+        Save 25% on rentals!
       </div>
     </div>
     """
