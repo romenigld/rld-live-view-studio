@@ -33,7 +33,9 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
     ~H"""
     <h1>Daily Boat Rentals</h1>
 
-    <.promo />
+    <.promo>
+      Save 25% on rentals!
+    </.promo>
 
     <div id="boats">
       <form phx-change="filter">
@@ -85,7 +87,9 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
       </div>
     </div>
 
-    <.promo />
+    <.promo>
+      Hurry, only 3 boats left!
+    </.promo>
     """
   end
 
@@ -93,7 +97,7 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
     ~H"""
     <div class="promo">
       <div class="deal">
-        Save 25% on rentals!
+        <%= render_slot(@inner_block) %>
       </div>
     </div>
     """
