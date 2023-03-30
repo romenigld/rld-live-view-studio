@@ -85,6 +85,7 @@ defmodule RldLiveViewStudioWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import RldLiveViewStudioWeb.CoreComponents
+      import RldLiveViewStudioWeb.CustomComponents
       import RldLiveViewStudioWeb.Gettext
 
       # Shortcut for generating JS commands

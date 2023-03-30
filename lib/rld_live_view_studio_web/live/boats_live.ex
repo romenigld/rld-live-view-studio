@@ -2,7 +2,6 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
   use RldLiveViewStudioWeb, :live_view
 
   alias RldLiveViewStudio.Boats
-  import RldLiveViewStudioWeb.CustomComponents
 
   def mount(_params, _session, socket) do
     socket =
@@ -56,7 +55,7 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
   end
 
   # attribute of the schema
-  attr :boat, RldLiveViewStudio.Boats.Boat, required: true
+  attr(:boat, RldLiveViewStudio.Boats.Boat, required: true)
 
   def boat(assigns) do
     ~H"""
@@ -79,7 +78,7 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
     """
   end
 
-  attr :filter, :map, required: true
+  attr(:filter, :map, required: true)
 
   def filter_form(assigns) do
     ~H"""
