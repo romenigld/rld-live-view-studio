@@ -1,10 +1,18 @@
 defmodule RldLiveViewStudioWeb.CustomComponents do
   use Phoenix.Component
 
-  attr :minutes, :integer
-  attr :expiration, :integer, default: 24
-  slot :legal
-  slot :inner_block, required: true
+  embed_templates("icons/*")
+
+  attr(:spinning, :boolean, default: false)
+  def moon_icon(assigns)
+
+  attr(:points, :integer, required: true)
+  def star_icon(assigns)
+
+  attr(:minutes, :integer)
+  attr(:expiration, :integer, default: 24)
+  slot(:legal)
+  slot(:inner_block, required: true)
 
   def promo(assigns) do
     # assigns = assign(assigns, :minutes, assigns.expiration * 60)

@@ -31,7 +31,11 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
 
   def render(assigns) do
     ~H"""
+    <.moon_icon />
+
     <h1>Daily Boat Rentals</h1>
+
+    <.star_icon points={10} />
 
     <.promo expiration={2}>
       Save 25% on rentals!
