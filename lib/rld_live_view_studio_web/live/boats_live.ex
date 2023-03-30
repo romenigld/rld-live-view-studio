@@ -55,6 +55,7 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
     """
   end
 
+  # attribute of the schema
   attr :boat, RldLiveViewStudio.Boats.Boat, required: true
 
   def boat(assigns) do
