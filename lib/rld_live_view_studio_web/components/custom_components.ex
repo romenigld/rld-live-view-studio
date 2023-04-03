@@ -54,4 +54,24 @@ defmodule RldLiveViewStudioWeb.CustomComponents do
     </span>
     """
   end
+
+  attr(:visible, :boolean, default: false)
+  # loading spinner
+  def loading_indicator(assigns) do
+    ~H"""
+    <div :if={@visible} class="relative flex justify-center my-10">
+      <div class="absolute w-12 h-12 border-8 border-gray-300 rounded-full">
+      </div>
+      <div class="absolute w-12 h-12 border-8 border-indigo-400 rounded-full border-t-transparent animate-spin">
+      </div>
+    </div>
+    """
+  end
+
+  # loading 3 balls
+  # def loading_indicator(assigns) do
+  #   ~H"""
+  #   <div :if={@visible} class="loader">Loading...</div>
+  #   """
+  # end
 end
