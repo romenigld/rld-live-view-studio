@@ -31,6 +31,8 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
 
   def render(assigns) do
     ~H"""
+    <.icon name="hero-exclamation-circle" />
+
     <.badge label="filmed" id="status-filmed" phx-click="remove" />
     <.badge label="edited" class="font-bold bg-blue-300" />
     <.badge label="released" />
