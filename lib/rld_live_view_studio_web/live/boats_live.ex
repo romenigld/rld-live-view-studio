@@ -31,6 +31,10 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
 
   def render(assigns) do
     ~H"""
+    <.badge label="filmed" id="status-filmed" phx-click="remove" />
+    <.badge label="edited" class="font-bold bg-blue-300" />
+    <.badge label="released" />
+
     <.moon_icon />
 
     <h1>Daily Boat Rentals</h1>
