@@ -21,7 +21,14 @@ defmodule RldLiveViewStudio.MenuTest do
     end
 
     test "create_product/1 with valid data creates a product" do
-      valid_attrs = %{description: "some description", image: "some image", name: "some name", price: "some price", tags: "some tags", type: "some type"}
+      valid_attrs = %{
+        description: "some description",
+        image: "some image",
+        name: "some name",
+        price: "some price",
+        tags: "some tags",
+        type: "some type"
+      }
 
       assert {:ok, %Product{} = product} = Menu.create_product(valid_attrs)
       assert product.description == "some description"
@@ -38,7 +45,15 @@ defmodule RldLiveViewStudio.MenuTest do
 
     test "update_product/2 with valid data updates the product" do
       product = product_fixture()
-      update_attrs = %{description: "some updated description", image: "some updated image", name: "some updated name", price: "some updated price", tags: "some updated tags", type: "some updated type"}
+
+      update_attrs = %{
+        description: "some updated description",
+        image: "some updated image",
+        name: "some updated name",
+        price: "some updated price",
+        tags: "some updated tags",
+        type: "some updated type"
+      }
 
       assert {:ok, %Product{} = product} = Menu.update_product(product, update_attrs)
       assert product.description == "some updated description"

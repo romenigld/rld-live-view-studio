@@ -21,7 +21,12 @@ defmodule RldLiveViewStudio.BoatsTest do
     end
 
     test "create_boat/1 with valid data creates a boat" do
-      valid_attrs = %{image: "some image", model: "some model", price: "some price", type: "some type"}
+      valid_attrs = %{
+        image: "some image",
+        model: "some model",
+        price: "some price",
+        type: "some type"
+      }
 
       assert {:ok, %Boat{} = boat} = Boats.create_boat(valid_attrs)
       assert boat.image == "some image"
@@ -36,7 +41,13 @@ defmodule RldLiveViewStudio.BoatsTest do
 
     test "update_boat/2 with valid data updates the boat" do
       boat = boat_fixture()
-      update_attrs = %{image: "some updated image", model: "some updated model", price: "some updated price", type: "some updated type"}
+
+      update_attrs = %{
+        image: "some updated image",
+        model: "some updated model",
+        price: "some updated price",
+        type: "some updated type"
+      }
 
       assert {:ok, %Boat{} = boat} = Boats.update_boat(boat, update_attrs)
       assert boat.image == "some updated image"

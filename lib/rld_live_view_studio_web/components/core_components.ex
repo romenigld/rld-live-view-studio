@@ -13,7 +13,7 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
   alias Phoenix.LiveView.JS
   import RldLiveViewStudioWeb.Gettext
 
-    @doc """
+  @doc """
   Renders a modal.
 
   ## Examples
@@ -44,11 +44,7 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class="relative z-50 hidden"
     >
-      <div
-        id={"#{@id}-bg"}
-        class="bg-zinc-50/90 fixed inset-0 transition-opacity"
-        aria-hidden="true"
-      />
+      <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -106,13 +102,9 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
   def flash(assigns) do
     ~H"""
     <div
-      :if={
-        msg = render_slot(@inner_block) || Phoenix.Flash.get(@flash, @kind)
-      }
+      :if={msg = render_slot(@inner_block) || Phoenix.Flash.get(@flash, @kind)}
       id={@id}
-      phx-click={
-        JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")
-      }
+      phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class={[
         "fixed top-2 right-2 w-80 sm:w-96 z-50 rounded-lg p-3 ring-1",
@@ -123,32 +115,14 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
       ]}
       {@rest}
     >
-      <p
-        :if={@title}
-        class="flex items-center gap-1.5 text-sm font-semibold leading-6"
-      >
-        <.icon
-          :if={@kind == :info}
-          name="hero-information-circle-mini"
-          class="h-4 w-4"
-        />
-        <.icon
-          :if={@kind == :error}
-          name="hero-exclamation-circle-mini"
-          class="h-4 w-4"
-        />
+      <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">
+        <.icon :if={@kind == :info} name="hero-information-circle-mini" class="h-4 w-4" />
+        <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" />
         <%= @title %>
       </p>
       <p class="mt-2 text-sm leading-5"><%= msg %></p>
-      <button
-        type="button"
-        class="group absolute top-1 right-1 p-2"
-        aria-label={gettext("close")}
-      >
-        <.icon
-          name="hero-x-mark-solid"
-          class="h-5 w-5 opacity-40 group-hover:opacity-70"
-        />
+      <button type="button" class="group absolute top-1 right-1 p-2" aria-label={gettext("close")}>
+        <.icon name="hero-x-mark-solid" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
       </button>
     </div>
     """
@@ -175,8 +149,7 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
       phx-connected={hide("#disconnected")}
       hidden
     >
-      Attempting to reconnect
-      <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+      Attempting to reconnect <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
     </.flash>
     """
   end
@@ -209,10 +182,7 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
     <.form :let={f} for={@for} as={@as} {@rest}>
       <div class="mt-10 space-y-8 bg-white">
         <%= render_slot(@inner_block, f) %>
-        <div
-          :for={action <- @actions}
-          class="mt-2 flex items-center justify-between gap-6"
-        >
+        <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
         </div>
       </div>
@@ -390,10 +360,7 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label
-      for={@for}
-      class="block text-sm font-semibold leading-6 text-zinc-800"
-    >
+    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -407,10 +374,7 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
   def error(assigns) do
     ~H"""
     <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600 phx-no-feedback:hidden">
-      <.icon
-        name="hero-exclamation-circle-mini"
-        class="mt-0.5 h-5 w-5 flex-none"
-      />
+      <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" />
       <%= render_slot(@inner_block) %>
     </p>
     """
@@ -435,10 +399,7 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
         <h1 class="text-lg font-semibold leading-8 text-zinc-800">
           <%= render_slot(@inner_block) %>
         </h1>
-        <p
-          :if={@subtitle != []}
-          class="mt-2 text-sm leading-6 text-zinc-600"
-        >
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
@@ -493,16 +454,10 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
         </thead>
         <tbody
           id={@id}
-          phx-update={
-            match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"
-          }
+          phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
           class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
         >
-          <tr
-            :for={row <- @rows}
-            id={@row_id && @row_id.(row)}
-            class="group hover:bg-zinc-50"
-          >
+          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
             <td
               :for={{col, i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
@@ -554,10 +509,7 @@ defmodule RldLiveViewStudioWeb.CoreComponents do
     ~H"""
     <div class="mt-14">
       <dl class="-my-4 divide-y divide-zinc-100">
-        <div
-          :for={item <- @item}
-          class="flex gap-4 py-4 text-sm leading-6 sm:gap-8"
-        >
+        <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
           <dt class="w-1/4 flex-none text-zinc-500"><%= item.title %></dt>
           <dd class="text-zinc-700"><%= render_slot(item) %></dd>
         </div>

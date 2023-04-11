@@ -21,7 +21,12 @@ defmodule RldLiveViewStudio.AthletesTest do
     end
 
     test "create_athlete/1 with valid data creates a athlete" do
-      valid_attrs = %{emoji: "some emoji", name: "some name", sport: "some sport", status: "some status"}
+      valid_attrs = %{
+        emoji: "some emoji",
+        name: "some name",
+        sport: "some sport",
+        status: "some status"
+      }
 
       assert {:ok, %Athlete{} = athlete} = Athletes.create_athlete(valid_attrs)
       assert athlete.emoji == "some emoji"
@@ -36,7 +41,13 @@ defmodule RldLiveViewStudio.AthletesTest do
 
     test "update_athlete/2 with valid data updates the athlete" do
       athlete = athlete_fixture()
-      update_attrs = %{emoji: "some updated emoji", name: "some updated name", sport: "some updated sport", status: "some updated status"}
+
+      update_attrs = %{
+        emoji: "some updated emoji",
+        name: "some updated name",
+        sport: "some updated sport",
+        status: "some updated status"
+      }
 
       assert {:ok, %Athlete{} = athlete} = Athletes.update_athlete(athlete, update_attrs)
       assert athlete.emoji == "some updated emoji"

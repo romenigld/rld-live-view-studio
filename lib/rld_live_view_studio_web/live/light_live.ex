@@ -46,13 +46,7 @@ defmodule RldLiveViewStudioWeb.LightLive do
         <div class="temps">
           <%= for temp <- ["3000", "4000", "5000"] do %>
             <div>
-              <input
-                type="radio"
-                id={temp}
-                name="temp"
-                value={temp}
-                checked={@temp == temp}
-              />
+              <input type="radio" id={temp} name="temp" value={temp} checked={@temp == temp} />
               <label for={temp}><%= temp %></label>
             </div>
           <% end %>

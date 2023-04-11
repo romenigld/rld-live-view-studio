@@ -17,7 +17,6 @@ defmodule RldLiveViewStudioWeb.AthletesLive do
     ~H"""
     <h1>Athletes</h1>
     <div id="athletes">
-
       <.filter_form filter={@filter} />
 
       <div class="athletes">
