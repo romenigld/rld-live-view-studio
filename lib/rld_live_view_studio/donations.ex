@@ -18,7 +18,7 @@ defmodule RldLiveViewStudio.Donations do
 
   """
   def list_donations do
-    Repo.all(Donation)
+    Repo.all(from d in Donation, order_by: [asc: d.id])
   end
 
   @doc """
