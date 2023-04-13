@@ -52,7 +52,7 @@ defmodule RldLiveViewStudioWeb.ServersLive do
         <div class="nav">
           <.link
             :for={server <- @servers}
-            patch={~p"/servers?#{[id: server]}"}
+            patch={~p"/servers/#{server}"}
             class={if server == @selected_server, do: "selected"}
           >
             <span class={server.status}></span>
