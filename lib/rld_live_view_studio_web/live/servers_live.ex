@@ -14,6 +14,10 @@ defmodule RldLiveViewStudioWeb.ServersLive do
         coffees: 0
       )
 
+    # if use the temporary_assigns the value of @servers will be an empty list when it will be clicked to another server.
+    # Therefore, the :for comprehension won't render anything.
+    # {:ok, socket, temporary_assigns: [servers: []]}
+
     {:ok, socket}
   end
 
