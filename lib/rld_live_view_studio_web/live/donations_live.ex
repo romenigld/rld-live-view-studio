@@ -34,6 +34,10 @@ defmodule RldLiveViewStudioWeb.DonationsLive do
     {:noreply, socket}
   end
 
+  attr(:sort_by, :atom, required: true)
+  attr(:options, :map, required: true)
+  slot(:inner_block, required: true)
+
   def sort_link(assigns) do
     ~H"""
     <.link patch={
