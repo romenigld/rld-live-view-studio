@@ -22,6 +22,36 @@ defmodule RldLiveViewStudio.Donations do
   end
 
   @doc """
+  Returns a list of donations based on the given `options`.
+
+  Example options:
+
+  %{sort_by: :item, sort_order: :asc, page: 2, per_page: 5}
+  """
+  def list_donations(options) when is_map(options) do
+    from(Donation)
+    |> sort(options)
+    |> paginate(options)
+    |> Repo.all()
+  end
+
+  defp sort(query, %{sort_by: sort_by, sort_order: sort_order}) do
+    order_by(query, {^sort_order, ^sort_by})
+  end
+
+  defp sort(query, _options), do: query
+
+  defp paginate(query, %{page: page, per_page: per_page}) do
+    offset = max((page - 1) * per_page, 0)
+
+    query
+    |> limit(^per_page)
+    |> offset(^offset)
+  end
+
+  defp paginate(query, _options), do: query
+
+  @doc """
   Gets a single donation.
 
   Raises `Ecto.NoResultsError` if the Donation does not exist.
