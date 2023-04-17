@@ -26,6 +26,29 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
     {:noreply, socket}
   end
 
+  attr(:sort_by, :atom, required: true)
+  attr(:options, :map, required: true)
+  slot(:inner_block, required: true)
+
+  def sort_link(assigns) do
+    IO.inspect(assigns, label: "ASSIGNS")
+
+    ~H"""
+    <.link patch={
+      ~p"/pizza-orders?#{%{sort_by: @sort_by, sort_order: next_sort_order(@options.sort_order)}}"
+    }>
+      <%= render_slot(@inner_block) %>
+    </.link>
+    """
+  end
+
+  # defp next_sort_order(options) do
+  #   case options.sort_order do
+  #     :asc -> :desc
+  #     :desc -> :asc
+  #   end
+  # end
+
   defp next_sort_order(:asc), do: :desc
   defp next_sort_order(:desc), do: :asc
 end

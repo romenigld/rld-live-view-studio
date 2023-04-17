@@ -8,11 +8,9 @@
             Id
           </th>
           <th>
-            <.link patch={
-              ~p"/pizza-orders?#{%{order_by: :size, sort_order: next_sort_order(@options.sort_order)}}"
-            }>
+            <.sort_link sort_by={:size} options={@options}>
               Size
-            </.link>
+            </.sort_link>
           </th>
           <th>
             Style
