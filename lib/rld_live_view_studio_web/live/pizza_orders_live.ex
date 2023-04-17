@@ -10,7 +10,7 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
 
   def handle_params(params, _uri, socket) do
     sort_order = valid_sort_order(params)
-    sort_by = (params["sort_by"] || "id") |> String.to_existing_atom()
+    sort_by = valid_sort_by(params)
 
     options = %{
       sort_by: sort_by,
@@ -58,4 +58,11 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
   end
 
   defp valid_sort_order(_params), do: :asc
+
+  defp valid_sort_by(%{"sort_by" => sort_by})
+       when sort_by in ~w(id size style topping_1 topping_2 price) do
+    String.to_existing_atom(sort_by)
+  end
+
+  defp valid_sort_by(_params), do: :id
 end
