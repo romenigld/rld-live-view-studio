@@ -5,10 +5,14 @@
       <thead>
         <tr>
           <th class="id">
-            #
+            Id
           </th>
           <th>
-            Size
+            <.link patch={
+              ~p"/pizza-orders?#{%{order_by: :size, sort_order: next_sort_order(@options.sort_order)}}"
+            }>
+              Size
+            </.link>
           </th>
           <th>
             Style
