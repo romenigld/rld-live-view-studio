@@ -36,7 +36,7 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
       ~p"/pizza-orders?#{%{sort_by: @sort_by, sort_order: next_sort_order(@options.sort_order)}}"
     }>
       <%= render_slot(@inner_block) %>
-      <%= sort_indicator(@sort_by, @options) %>
+      <%= sort_indicator(@sort_by, @options, assigns) %>
     </.link>
     """
   end
@@ -65,13 +65,35 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
 
   defp valid_sort_by(_params), do: :id
 
-  defp sort_indicator(column, %{sort_by: sort_by, sort_order: sort_order})
+  # defp sort_indicator(column, %{sort_by: sort_by, sort_order: sort_order})
+  #      when column == sort_by do
+  #   case sort_order do
+  #     :asc -> "👆"
+  #     :desc -> "👇"
+  #   end
+  # end
+
+  # defp sort_indicator(_, _), do: ""
+
+  defp sort_indicator(column, %{sort_by: sort_by, sort_order: sort_order}, assigns)
        when column == sort_by do
     case sort_order do
-      :asc -> "👆"
-      :desc -> "👇"
+      :asc -> chevron_up(assigns)
+      :desc -> chevron_down(assigns)
     end
   end
 
-  defp sort_indicator(_, _), do: ""
+  defp sort_indicator(_, _, _), do: ""
+
+  defp chevron_up(assigns) do
+    ~H"""
+    <Heroicons.chevron_up class="w-4 h-4" />
+    """
+  end
+
+  defp chevron_down(assigns) do
+    ~H"""
+    <Heroicons.chevron_down class="w-4 h-4" />
+    """
+  end
 end
