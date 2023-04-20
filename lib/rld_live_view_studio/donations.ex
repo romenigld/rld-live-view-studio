@@ -8,6 +8,10 @@ defmodule RldLiveViewStudio.Donations do
 
   alias RldLiveViewStudio.Donations.Donation
 
+  def donation_count do
+    Repo.aggregate(Donation, :count, :id)
+  end
+
   @doc """
   Returns the list of donations.
 

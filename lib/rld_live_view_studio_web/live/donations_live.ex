@@ -33,7 +33,8 @@ defmodule RldLiveViewStudioWeb.DonationsLive do
     socket =
       assign(socket,
         donations: donations,
-        options: options
+        options: options,
+        donation_count: Donations.donation_count()
       )
 
     {:noreply, socket}
@@ -105,5 +106,9 @@ defmodule RldLiveViewStudioWeb.DonationsLive do
       {number, _} -> number
       :error -> default
     end
+  end
+
+  defp more_pages?(options, donation_count) do
+    options.page * options.per_page < donation_count
   end
 end
