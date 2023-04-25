@@ -29,6 +29,19 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
     {:ok, socket, temporary_assigns: [boats: []]}
   end
 
+  def handle_params(params, _uri, socket) do
+    filter = %{
+      type: params["type"] || "",
+      prices: params["prices"] || [""]
+    }
+
+    boats = Boats.list_boats(filter)
+
+    socket = assign(socket, filter: filter, boats: boats)
+
+    {:noreply, socket}
+  end
+
   def render(assigns) do
     ~H"""
     <.icon name="hero-exclamation-circle" />
@@ -124,14 +137,11 @@ defmodule RldLiveViewStudioWeb.BoatsLive do
   end
 
   def handle_event("filter", %{"type" => type, "prices" => prices}, socket) do
-    filter = %{type: type, prices: prices}
+    params = %{type: type, prices: prices}
 
-    boats = Boats.list_boats(filter)
+    socket = push_patch(socket, to: ~p"/boats?#{params}")
 
-    IO.inspect(length(socket.assigns.boats), label: "Assigned boats")
-    IO.inspect(length(boats), label: "Filtered boats")
-
-    {:noreply, assign(socket, boats: boats, filter: filter)}
+    {:noreply, socket}
   end
 
   defp type_options do
