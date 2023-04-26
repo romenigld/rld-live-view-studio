@@ -11,10 +11,14 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
   def handle_params(params, _uri, socket) do
     sort_order = valid_sort_order(params)
     sort_by = valid_sort_by(params)
+    page = (params["page"] || "1") |> String.to_integer()
+    per_page = (params["per_page"] || "5") |> String.to_integer()
 
     options = %{
       sort_by: sort_by,
-      sort_order: sort_order
+      sort_order: sort_order,
+      page: page,
+      per_page: per_page
     }
 
     socket =
@@ -33,7 +37,7 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
   def sort_link(assigns) do
     ~H"""
     <.link patch={
-      ~p"/pizza-orders?#{%{sort_by: @sort_by, sort_order: next_sort_order(@options.sort_order)}}"
+      ~p"/pizza-orders?#{%{@options | sort_by: @sort_by, sort_order: next_sort_order(@options.sort_order)}}"
     }>
       <%= render_slot(@inner_block) %>
       <%= sort_indicator(@sort_by, @options, assigns) %>
@@ -95,5 +99,9 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
     ~H"""
     <Heroicons.chevron_down class="w-4 h-4" />
     """
+  end
+
+  defp more_pages?(options, pizza_orders_count) do
+    options.page * options.per_page < pizza_orders_count
   end
 end

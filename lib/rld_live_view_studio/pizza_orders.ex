@@ -8,6 +8,10 @@ defmodule RldLiveViewStudio.PizzaOrders do
 
   alias RldLiveViewStudio.PizzaOrders.PizzaOrder
 
+  def pizza_orders_count do
+    Repo.aggregate(PizzaOrder, :count, :id)
+  end
+
   @doc """
   Returns the list of pizza_orders.
 
