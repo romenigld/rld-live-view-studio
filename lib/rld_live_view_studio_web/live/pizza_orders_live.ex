@@ -24,7 +24,8 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
     socket =
       assign(socket,
         pizza_orders: PizzaOrders.list_pizza_orders(options),
-        options: options
+        options: options,
+        pizza_orders_count: PizzaOrders.pizza_orders_count()
       )
 
     {:noreply, socket}
