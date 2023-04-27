@@ -46,6 +46,13 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
     """
   end
 
+  def handle_event("select-per-page", %{"per-page" => per_page}, socket) do
+    params = %{socket.assigns.options | per_page: per_page}
+
+    socket = push_patch(socket, to: ~p"/pizza-orders?#{params}")
+    {:noreply, socket}
+  end
+
   # defp next_sort_order(options) do
   #   case options.sort_order do
   #     :asc -> :desc
