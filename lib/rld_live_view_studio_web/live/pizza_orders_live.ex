@@ -11,8 +11,8 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
   def handle_params(params, _uri, socket) do
     sort_order = valid_sort_order(params)
     sort_by = valid_sort_by(params)
-    page = (params["page"] || "1") |> String.to_integer()
-    per_page = (params["per_page"] || "5") |> String.to_integer()
+    page = param_to_integer(params["page"], 1)
+    per_page = param_to_integer(params["per_page"], 5)
 
     options = %{
       sort_by: sort_by,
@@ -69,6 +69,15 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
   end
 
   defp valid_sort_by(_params), do: :id
+
+  defp param_to_integer(nil, default), do: default
+
+  defp param_to_integer(params, default) do
+    case Integer.parse(params) do
+      {number, _} -> number
+      :error -> default
+    end
+  end
 
   # defp sort_indicator(column, %{sort_by: sort_by, sort_order: sort_order})
   #      when column == sort_by do
