@@ -114,4 +114,16 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
   defp more_pages?(options, pizza_orders_count) do
     options.page * options.per_page < pizza_orders_count
   end
+
+  defp pages(options, pizza_orders_count) do
+    page_count = ceil(pizza_orders_count / options.per_page)
+
+    for page_number <- (options.page - 2)..(options.page + 2),
+        page_number > 0 do
+      if page_number <= page_count do
+        current_page? = page_number == options.page
+        {page_number, current_page?}
+      end
+    end
+  end
 end
