@@ -4,13 +4,6 @@ defmodule RldLiveViewStudioWeb.DonationsLive do
   alias RldLiveViewStudio.Donations
 
   def mount(_params, _session, socket) do
-    donations = Donations.list_donations()
-
-    socket =
-      assign(socket,
-        donations: donations
-      )
-
     {:ok, socket, temporary_assigns: [donations: []]}
   end
 
