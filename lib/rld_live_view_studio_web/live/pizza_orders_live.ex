@@ -5,7 +5,7 @@ defmodule RldLiveViewStudioWeb.PizzaOrdersLive do
   import Number.Currency
 
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, socket, temporary_assigns: [pizza_orders: []]}
   end
 
   def handle_params(params, _uri, socket) do
