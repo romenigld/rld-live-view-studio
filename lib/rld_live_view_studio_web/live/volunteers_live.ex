@@ -62,9 +62,12 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
 
         changeset = Volunteers.change_volunteer(%Volunteer{})
 
+        socket = put_flash(socket, :info, "Volunteer successfully checked in!")
+
         {:noreply, assign(socket, :form, to_form(changeset))}
 
       {:error, changeset} ->
+        socket = put_flash(socket, :error, "Volunteer form has an error!")
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
