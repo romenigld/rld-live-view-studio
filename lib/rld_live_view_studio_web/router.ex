@@ -29,6 +29,7 @@ defmodule RldLiveViewStudioWeb.Router do
     live("/athletes", AthletesLive)
     live("/restaurant", RestaurantLive)
     live("/servers", ServersLive)
+    live("/servers/new", ServersLive, :new)
     live("/servers/:id", ServersLive)
     live("/donations", DonationsLive)
     live("/pizza-orders", PizzaOrdersLive)

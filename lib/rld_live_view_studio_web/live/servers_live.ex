@@ -9,13 +9,10 @@ defmodule RldLiveViewStudioWeb.ServersLive do
 
     servers = Servers.list_servers()
 
-    changeset = Servers.change_server(%Server{})
-
     socket =
       assign(socket,
         servers: servers,
-        coffees: 0,
-        form: to_form(changeset)
+        coffees: 0
       )
 
     # if use the temporary_assigns the value of @servers will be an empty list when it will be clicked to another server.
@@ -40,10 +37,21 @@ defmodule RldLiveViewStudioWeb.ServersLive do
   def handle_params(_, _uri, socket) do
     IO.inspect(self(), label: "HANDLE PARAMS CATCH-ALL")
 
-    {:noreply,
-     assign(socket,
-       selected_server: hd(socket.assigns.servers)
-     )}
+    socket =
+      if socket.assigns.live_action == :new do
+        changeset = Servers.change_server(%Server{})
+
+        assign(socket,
+          selected_server: nil,
+          form: to_form(changeset)
+        )
+      else
+        assign(socket,
+          selected_server: hd(socket.assigns.servers)
+        )
+      end
+
+    {:noreply, socket}
   end
 
   def render(assigns) do
@@ -59,6 +67,9 @@ defmodule RldLiveViewStudioWeb.ServersLive do
     <div id="servers">
       <div class="sidebar">
         <div class="nav">
+          <.link patch={~p"/servers/new"} class="add">
+            + Add New Server
+          </.link>
           <.link
             :for={server <- @servers}
             patch={~p"/servers/#{server}"}
@@ -77,23 +88,29 @@ defmodule RldLiveViewStudioWeb.ServersLive do
       </div>
       <div class="main">
         <div class="wrapper">
-          <.form for={@form} phx-submit="save">
-            <div class="field">
-              <.input field={@form[:name]} placeholder="Name" />
-            </div>
-            <div class="field">
-              <.input field={@form[:framework]} placeholder="Framework" />
-            </div>
-            <div class="field">
-              <.input field={@form[:size]} type="number" placeholder="Size (MB)" />
-            </div>
-            <button phx-disable-with="Saving...">
-              Save
-            </button>
-          </.form>
+          <%= if @live_action == :new do %>
+            <.form for={@form} phx-submit="save">
+              <div class="field">
+                <.input field={@form[:name]} placeholder="Name" />
+              </div>
+              <div class="field">
+                <.input field={@form[:framework]} placeholder="Framework" />
+              </div>
+              <div class="field">
+                <.input field={@form[:size]} type="number" placeholder="Size (MB)" />
+              </div>
+              <button phx-disable-with="Saving...">
+                Save
+              </button>
+              <.link patch={~p"/servers"} class="cancel">
+                Cancel
+              </.link>
+            </.form>
+          <% else %>
+            <.server server={@selected_server} />
+          <% end %>
         </div>
         <div class="wrapper">
-          <.server server={@selected_server} />
           <div class="links">
             <.link navigate={~p"/light"}>
               Adjust Lights
@@ -151,11 +168,10 @@ defmodule RldLiveViewStudioWeb.ServersLive do
             fn servers -> [server | servers] end
           )
 
-        changeset = Servers.change_server(%Server{})
-
         socket = put_flash(socket, :info, "Server created successfully!")
+        socket = push_patch(socket, to: ~p"/servers/#{server}")
 
-        {:noreply, assign(socket, :form, to_form(changeset))}
+        {:noreply, socket}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
