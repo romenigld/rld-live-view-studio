@@ -88,7 +88,7 @@ defmodule RldLiveViewStudioWeb.ServersLive do
                   field={@form[:size]}
                   placeholder="Size (MB)"
                   type="number"
-                  phx-debounce="blur"
+                  phx-debounce="1000"
                 />
               </div>
               <.button phx-disable-with="Saving...">
