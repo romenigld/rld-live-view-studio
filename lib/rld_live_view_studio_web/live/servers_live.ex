@@ -76,15 +76,20 @@ defmodule RldLiveViewStudioWeb.ServersLive do
       <div class="main">
         <div class="wrapper">
           <%= if @live_action == :new do %>
-            <.form for={@form} phx-submit="save">
+            <.form for={@form} phx-submit="save" phx-change="validate">
               <div class="field">
-                <.input field={@form[:name]} placeholder="Name" />
+                <.input field={@form[:name]} placeholder="Name" phx-debounce="2000" />
               </div>
               <div class="field">
-                <.input field={@form[:framework]} placeholder="Framework" />
+                <.input field={@form[:framework]} placeholder="Framework" phx-debounce="blur" />
               </div>
               <div class="field">
-                <.input field={@form[:size]} placeholder="Size (MB)" type="number" />
+                <.input
+                  field={@form[:size]}
+                  placeholder="Size (MB)"
+                  type="number"
+                  phx-debounce="1000"
+                />
               </div>
               <.button phx-disable-with="Saving...">
                 Save
@@ -159,5 +164,14 @@ defmodule RldLiveViewStudioWeb.ServersLive do
       {:error, changeset} ->
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
+  end
+
+  def handle_event("validate", %{"server" => server_params}, socket) do
+    changeset =
+      %Server{}
+      |> Servers.change_server(server_params)
+      |> Map.put(:action, :validate)
+
+    {:noreply, assign(socket, :form, to_form(changeset))}
   end
 end
