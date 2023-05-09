@@ -8,6 +8,10 @@ defmodule RldLiveViewStudio.Volunteers do
 
   alias RldLiveViewStudio.Volunteers.Volunteer
 
+  def toggle_status_volunteer(%Volunteer{} = volunteer) do
+    update_volunteer(volunteer, %{checked_out: !volunteer.checked_out})
+  end
+
   @doc """
   Returns the list of volunteers.
 
@@ -18,7 +22,7 @@ defmodule RldLiveViewStudio.Volunteers do
 
   """
   def list_volunteers do
-    Repo.all(from v in Volunteer, order_by: [desc: v.id])
+    Repo.all(from(v in Volunteer, order_by: [desc: v.id]))
   end
 
   @doc """
