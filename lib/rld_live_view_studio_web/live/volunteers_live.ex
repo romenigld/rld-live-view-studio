@@ -13,6 +13,8 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
       |> stream(:volunteers, volunteers)
       |> assign(:form, to_form(changeset))
 
+    IO.inspect(socket.assigns.streams.volunteers, label: "mount")
+
     {:ok, socket}
   end
 
@@ -65,6 +67,8 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
       {:ok, volunteer} ->
         socket = stream_insert(socket, :volunteers, volunteer, at: 0)
 
+        IO.inspect(socket.assigns.streams.volunteers, label: "save")
+
         changeset = Volunteers.change_volunteer(%Volunteer{})
 
         socket = put_flash(socket, :info, "Volunteer successfully checked in!")
@@ -78,6 +82,8 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
   end
 
   def handle_event("validate", %{"volunteer" => volunteer_params}, socket) do
+    IO.inspect(socket.assigns.streams.volunteers, label: "validate")
+
     changeset =
       %Volunteer{}
       |> Volunteers.change_volunteer(volunteer_params)
