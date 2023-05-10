@@ -144,6 +144,7 @@ defmodule RldLiveViewStudioWeb.ServersLive do
   def handle_event("toggle-status", %{"id" => id}, socket) do
     server = Servers.get_server!(id)
 
+    # Rather than using the function 'change_server_status/1'.
     # You could update the server's status to the opposite of its current status by doing this:
     # new_status = if server.status == "up", do: "down", else: "up"
 
