@@ -8,10 +8,9 @@ defmodule RldLiveViewStudioWeb.ServersLive do
     servers = Servers.list_servers()
 
     socket =
-      assign(socket,
-        servers: servers,
-        coffees: 0
-      )
+      socket
+      |> assign(:servers, servers)
+      |> assign(:coffees, 0)
 
     # if use the temporary_assigns the value of @servers will be an empty list when it will be clicked to another server.
     # Therefore, the :for comprehension won't render anything.
@@ -117,9 +116,9 @@ defmodule RldLiveViewStudioWeb.ServersLive do
     <div class="server">
       <div class="header">
         <h2><%= @server.name %></h2>
-        <span class={@server.status}>
+        <button class={@server.status} phx-click="toggle-status" phx-value-id={@server.id}>
           <%= @server.status %>
-        </span>
+        </button>
       </div>
       <div class="body">
         <div class="row">
@@ -140,6 +139,45 @@ defmodule RldLiveViewStudioWeb.ServersLive do
       </div>
     </div>
     """
+  end
+
+  def handle_event("toggle-status", %{"id" => id}, socket) do
+    server = Servers.get_server!(id)
+
+    # You could update the server's status to the opposite of its current status by doing this:
+    # new_status = if server.status == "up", do: "down", else: "up"
+
+    {:ok, server_status_updated} =
+      Servers.update_server(server, %{status: change_server_status(server.status)})
+
+    socket = assign(socket, :selected_server, server_status_updated)
+
+    # Three ways to update the server's red/green
+    # status indicator in the sidebar:
+
+    # 1. Refetch the list of servers and assign them back.
+    # socket = assign(socket, :servers, Servers.list_servers())
+
+    # 2. Or, to avoid another database hit, find the matching
+    # server in the current list of servers, replace it, and
+    # assign the resulting list back:
+    # servers =
+    #   Enum.map(socket.assigns.servers, fn s ->
+    #     if s.id == server_status_updated.id, do: server_status_updated, else: s
+    #   end)
+
+    # socket = assign(socket, servers: servers)
+
+    # 3. Here's another way to do the same thing without
+    # having to assign the servers back to the socket:
+    socket =
+      update(socket, :servers, fn servers ->
+        for s <- servers do
+          if s.id == server_status_updated.id, do: server_status_updated, else: s
+        end
+      end)
+
+    {:noreply, socket}
   end
 
   def handle_event("drink", _, socket) do
@@ -174,4 +212,7 @@ defmodule RldLiveViewStudioWeb.ServersLive do
 
     {:noreply, assign(socket, :form, to_form(changeset))}
   end
+
+  defp change_server_status("up"), do: "down"
+  defp change_server_status("down"), do: "up"
 end
