@@ -9,6 +9,12 @@ defmodule RldLiveViewStudioWeb.VolunteerFormComponent do
     {:ok, assign(socket, :form, to_form(changeset))}
   end
 
+  # default implementation of the 'update/2' function
+  def update(assigns, socket) do
+    socket = assign(socket, assigns)
+    {:ok, socket}
+  end
+
   def render(assigns) do
     ~H"""
     <div>
