@@ -9,6 +9,7 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
     socket =
       socket
       |> stream(:volunteers, volunteers)
+      |> assign(:count, length(volunteers))
 
     {:ok, socket}
   end
@@ -17,7 +18,7 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
     ~H"""
     <h1>Volunteer Check-In</h1>
     <div id="volunteer-checkin">
-      <.live_component module={VolunteerFormComponent} id={:new} />
+      <.live_component module={VolunteerFormComponent} id={:new} count={@count} />
 
       <pre>
         <%#= inspect(@form, pretty: true) %>
@@ -87,7 +88,7 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
 
   def handle_info({:volunteer_created, volunteer}, socket) do
     socket = put_flash(socket, :info, "Volunteer successfully checked in!")
-
+    socket = update(socket, :count, &(&1 + 1))
     {:noreply, stream_insert(socket, :volunteers, volunteer, at: 0)}
   end
 
