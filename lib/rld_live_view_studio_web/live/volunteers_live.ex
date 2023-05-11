@@ -1,7 +1,6 @@
 defmodule RldLiveViewStudioWeb.VolunteersLive do
   use RldLiveViewStudioWeb, :live_view
   alias RldLiveViewStudio.Volunteers
-  alias RldLiveViewStudio.Volunteers.Volunteer
   alias RldLiveViewStudioWeb.VolunteerFormComponent
 
   def mount(_params, _session, socket) do
@@ -87,6 +86,13 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
   end
 
   def handle_info({:volunteer_created, volunteer}, socket) do
+    socket = put_flash(socket, :info, "Volunteer successfully checked in!")
+
     {:noreply, stream_insert(socket, :volunteers, volunteer, at: 0)}
+  end
+
+  def handle_info({:volunteer_form_error, message}, socket) do
+    socket = put_flash(socket, :error, message)
+    {:noreply, socket}
   end
 end
