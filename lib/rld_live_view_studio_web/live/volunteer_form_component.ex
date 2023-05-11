@@ -11,7 +11,11 @@ defmodule RldLiveViewStudioWeb.VolunteerFormComponent do
 
   # default implementation of the 'update/2' function
   def update(assigns, socket) do
-    socket = assign(socket, assigns)
+    socket =
+      socket
+      |> assign(assigns)
+      |> assign(:count, assigns.count + 1)
+
     {:ok, socket}
   end
 
@@ -19,7 +23,7 @@ defmodule RldLiveViewStudioWeb.VolunteerFormComponent do
     ~H"""
     <div>
       <div class="count">
-        Go for it! You'll be volunteer #<%= @count + 1 %>
+        Go for it! You'll be volunteer #<%= @count %>
       </div>
       <.form for={@form} phx-submit="save" phx-change="validate" phx-target={@myself}>
         <.input field={@form[:name]} placeholder="Name" autocomplete="off" phx-debounce="2000" />
