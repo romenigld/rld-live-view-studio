@@ -45,14 +45,14 @@ defmodule RldLiveViewStudioWeb.VolunteerFormComponent do
   def handle_event("save", %{"volunteer" => volunteer_params}, socket) do
     case Volunteers.create_volunteer(volunteer_params) do
       {:ok, volunteer} ->
-        send(self(), {:volunteer_created, volunteer})
+        send(self(), {__MODULE__, :volunteer_created, volunteer})
 
         changeset = Volunteers.change_volunteer(%Volunteer{})
 
         {:noreply, assign(socket, :form, to_form(changeset))}
 
       {:error, changeset} ->
-        send(self(), {:volunteer_form_error, "Volunteer form has some error!"})
+        send(self(), {__MODULE__, :volunteer_form_error, "Volunteer form has some error!"})
 
         {:noreply, assign(socket, :form, to_form(changeset))}
     end

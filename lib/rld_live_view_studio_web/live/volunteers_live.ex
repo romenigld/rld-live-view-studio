@@ -86,13 +86,13 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
     {:noreply, socket}
   end
 
-  def handle_info({:volunteer_created, volunteer}, socket) do
+  def handle_info({VolunteerFormComponent, :volunteer_created, volunteer}, socket) do
     socket = put_flash(socket, :info, "Volunteer successfully checked in!")
     socket = update(socket, :count, &(&1 + 1))
     {:noreply, stream_insert(socket, :volunteers, volunteer, at: 0)}
   end
 
-  def handle_info({:volunteer_form_error, message}, socket) do
+  def handle_info({VolunteerFormComponent, :volunteer_form_error, message}, socket) do
     socket = put_flash(socket, :error, message)
     {:noreply, socket}
   end
