@@ -2,7 +2,7 @@ defmodule RldLiveViewStudioWeb.ServersLive do
   use RldLiveViewStudioWeb, :live_view
 
   alias RldLiveViewStudio.Servers
-  alias RldLiveViewStudio.Servers.Server
+  alias RldLiveViewStudioWeb.ServerFormComponent
 
   def mount(_params, _session, socket) do
     servers = Servers.list_servers()
@@ -32,16 +32,9 @@ defmodule RldLiveViewStudioWeb.ServersLive do
   def handle_params(_, _uri, socket) do
     socket =
       if socket.assigns.live_action == :new do
-        changeset = Servers.change_server(%Server{})
-
-        assign(socket,
-          selected_server: nil,
-          form: to_form(changeset)
-        )
+        assign(socket, selected_server: nil)
       else
-        assign(socket,
-          selected_server: hd(socket.assigns.servers)
-        )
+        assign(socket, selected_server: hd(socket.assigns.servers))
       end
 
     {:noreply, socket}
@@ -75,28 +68,7 @@ defmodule RldLiveViewStudioWeb.ServersLive do
       <div class="main">
         <div class="wrapper">
           <%= if @live_action == :new do %>
-            <.form for={@form} phx-submit="save" phx-change="validate">
-              <div class="field">
-                <.input field={@form[:name]} placeholder="Name" phx-debounce="2000" />
-              </div>
-              <div class="field">
-                <.input field={@form[:framework]} placeholder="Framework" phx-debounce="blur" />
-              </div>
-              <div class="field">
-                <.input
-                  field={@form[:size]}
-                  placeholder="Size (MB)"
-                  type="number"
-                  phx-debounce="1000"
-                />
-              </div>
-              <.button phx-disable-with="Saving...">
-                Save
-              </.button>
-              <.link patch={~p"/servers"} class="cancel">
-                Cancel
-              </.link>
-            </.form>
+            <.live_component module={ServerFormComponent} id="new" />
           <% else %>
             <.server server={@selected_server} />
           <% end %>
@@ -185,33 +157,23 @@ defmodule RldLiveViewStudioWeb.ServersLive do
     {:noreply, update(socket, :coffees, &(&1 + 1))}
   end
 
-  def handle_event("save", %{"server" => server_params}, socket) do
-    case Servers.create_server(server_params) do
-      {:ok, server} ->
-        socket =
-          update(
-            socket,
-            :servers,
-            fn servers -> [server | servers] end
-          )
+  def handle_info({ServerFormComponent, :server_created, server}, socket) do
+    socket =
+      update(
+        socket,
+        :servers,
+        fn servers -> [server | servers] end
+      )
 
-        socket = put_flash(socket, :info, "Server created successfully!")
-        socket = push_patch(socket, to: ~p"/servers/#{server}")
+    socket = put_flash(socket, :info, "Server created successfully!")
+    socket = push_patch(socket, to: ~p"/servers/#{server}")
 
-        {:noreply, socket}
-
-      {:error, changeset} ->
-        {:noreply, assign(socket, :form, to_form(changeset))}
-    end
+    {:noreply, socket}
   end
 
-  def handle_event("validate", %{"server" => server_params}, socket) do
-    changeset =
-      %Server{}
-      |> Servers.change_server(server_params)
-      |> Map.put(:action, :validate)
-
-    {:noreply, assign(socket, :form, to_form(changeset))}
+  def handle_info({ServerFormComponent, :server_form_error, msg}, socket) do
+    socket = put_flash(socket, :error, msg)
+    {:noreply, socket}
   end
 
   defp change_server_status("up"), do: "down"
