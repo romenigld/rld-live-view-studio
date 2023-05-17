@@ -78,14 +78,7 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
   def handle_event("toggle-status", %{"id" => id}, socket) do
     volunteer = Volunteers.get_volunteer!(id)
 
-    {:ok, volunteer} = Volunteers.toggle_status_volunteer(volunteer)
-
-    socket =
-      stream_insert(
-        socket,
-        :volunteers,
-        volunteer
-      )
+    {:ok, _volunteer} = Volunteers.toggle_status_volunteer(volunteer)
 
     {:noreply, socket}
   end
@@ -98,6 +91,17 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
 
   def handle_info({VolunteerFormComponent, :volunteer_form_error, message}, socket) do
     socket = put_flash(socket, :error, message)
+    {:noreply, socket}
+  end
+
+  def handle_info({:volunteer_updated, volunteer}, socket) do
+    socket =
+      stream_insert(
+        socket,
+        :volunteers,
+        volunteer
+      )
+
     {:noreply, socket}
   end
 end
