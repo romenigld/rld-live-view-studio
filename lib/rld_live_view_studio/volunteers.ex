@@ -8,14 +8,17 @@ defmodule RldLiveViewStudio.Volunteers do
 
   alias RldLiveViewStudio.Volunteers.Volunteer
 
+  @pubsub RldLiveViewStudio.PubSub
+  @topic inspect(__MODULE__)
+
   def subscribe do
-    Phoenix.PubSub.subscribe(RldLiveViewStudio.PubSub, "volunteers")
+    Phoenix.PubSub.subscribe(@pubsub, @topic)
   end
 
   def broadcast({:ok, volunteer}, tag) do
     Phoenix.PubSub.broadcast(
-      RldLiveViewStudio.PubSub,
-      "volunteers",
+      @pubsub,
+      @topic,
       {tag, volunteer}
     )
 
