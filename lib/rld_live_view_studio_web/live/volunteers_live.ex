@@ -4,6 +4,10 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
   alias RldLiveViewStudioWeb.VolunteerFormComponent
 
   def mount(_params, _session, socket) do
+    if connected?(socket) do
+      Volunteers.subscribe()
+    end
+
     volunteers = Volunteers.list_volunteers()
 
     socket =
@@ -86,8 +90,8 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
     {:noreply, socket}
   end
 
-  def handle_info({VolunteerFormComponent, :volunteer_created, volunteer}, socket) do
-    socket = put_flash(socket, :info, "Volunteer successfully checked in!")
+  def handle_info({:volunteer_created, volunteer}, socket) do
+    socket = put_flash(socket, :info, "Volunteer successfully created!")
     socket = update(socket, :count, &(&1 + 1))
     {:noreply, stream_insert(socket, :volunteers, volunteer, at: 0)}
   end

@@ -8,6 +8,14 @@ defmodule RldLiveViewStudio.Volunteers do
 
   alias RldLiveViewStudio.Volunteers.Volunteer
 
+  def subscribe do
+    Phoenix.PubSub.subscribe(RldLiveViewStudio.PubSub, "volunteers")
+  end
+
+  def broadcast(message) do
+    Phoenix.PubSub.broadcast(RldLiveViewStudio.PubSub, "volunteers", message)
+  end
+
   def toggle_status_volunteer(%Volunteer{} = volunteer) do
     update_volunteer(volunteer, %{checked_out: !volunteer.checked_out})
   end
@@ -54,9 +62,14 @@ defmodule RldLiveViewStudio.Volunteers do
 
   """
   def create_volunteer(attrs \\ %{}) do
-    %Volunteer{}
-    |> Volunteer.changeset(attrs)
-    |> Repo.insert()
+    {:ok, volunteer} =
+      %Volunteer{}
+      |> Volunteer.changeset(attrs)
+      |> Repo.insert()
+
+    broadcast({:volunteer_created, volunteer})
+
+    {:ok, volunteer}
   end
 
   @doc """
