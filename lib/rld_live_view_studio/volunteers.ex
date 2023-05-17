@@ -12,9 +12,17 @@ defmodule RldLiveViewStudio.Volunteers do
     Phoenix.PubSub.subscribe(RldLiveViewStudio.PubSub, "volunteers")
   end
 
-  def broadcast(message) do
-    Phoenix.PubSub.broadcast(RldLiveViewStudio.PubSub, "volunteers", message)
+  def broadcast({:ok, volunteer}, tag) do
+    Phoenix.PubSub.broadcast(
+      RldLiveViewStudio.PubSub,
+      "volunteers",
+      {tag, volunteer}
+    )
+
+    {:ok, volunteer}
   end
+
+  def broadcast({:error, _changeset} = error, _tag), do: error
 
   def toggle_status_volunteer(%Volunteer{} = volunteer) do
     update_volunteer(volunteer, %{checked_out: !volunteer.checked_out})
@@ -62,14 +70,10 @@ defmodule RldLiveViewStudio.Volunteers do
 
   """
   def create_volunteer(attrs \\ %{}) do
-    {:ok, volunteer} =
-      %Volunteer{}
-      |> Volunteer.changeset(attrs)
-      |> Repo.insert()
-
-    broadcast({:volunteer_created, volunteer})
-
-    {:ok, volunteer}
+    %Volunteer{}
+    |> Volunteer.changeset(attrs)
+    |> Repo.insert()
+    |> broadcast(:volunteer_created)
   end
 
   @doc """
@@ -85,14 +89,10 @@ defmodule RldLiveViewStudio.Volunteers do
 
   """
   def update_volunteer(%Volunteer{} = volunteer, attrs) do
-    {:ok, volunteeer} =
-      volunteer
-      |> Volunteer.changeset(attrs)
-      |> Repo.update()
-
-    broadcast({:volunteer_updated, volunteeer})
-
-    {:ok, volunteeer}
+    volunteer
+    |> Volunteer.changeset(attrs)
+    |> Repo.update()
+    |> broadcast(:volunteer_updated)
   end
 
   @doc """
