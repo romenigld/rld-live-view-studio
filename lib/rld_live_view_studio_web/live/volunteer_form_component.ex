@@ -50,8 +50,6 @@ defmodule RldLiveViewStudioWeb.VolunteerFormComponent do
         {:noreply, assign(socket, :form, to_form(changeset))}
 
       {:error, changeset} ->
-        send(self(), {__MODULE__, :volunteer_form_error, "Volunteer form has some error!"})
-
         {:noreply, assign(socket, :form, to_form(changeset))}
     end
   end
