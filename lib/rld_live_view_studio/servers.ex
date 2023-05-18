@@ -30,7 +30,6 @@ defmodule RldLiveViewStudio.Servers do
     new_status = if server.status == "up", do: "down", else: "up"
 
     update_server(server, %{status: new_status})
-    |> broadcast(:server_status_updated)
   end
 
   @doc """
@@ -97,6 +96,7 @@ defmodule RldLiveViewStudio.Servers do
     server
     |> Server.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:server_updated)
   end
 
   @doc """

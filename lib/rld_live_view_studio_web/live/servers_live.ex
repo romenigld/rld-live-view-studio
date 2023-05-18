@@ -5,9 +5,7 @@ defmodule RldLiveViewStudioWeb.ServersLive do
   alias RldLiveViewStudioWeb.ServerFormComponent
 
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      Servers.subscribe()
-    end
+    if connected?(socket), do: Servers.subscribe()
 
     servers = Servers.list_servers()
 
@@ -117,12 +115,49 @@ defmodule RldLiveViewStudioWeb.ServersLive do
     """
   end
 
+  def handle_event("drink", _, socket) do
+    {:noreply, update(socket, :coffees, &(&1 + 1))}
+  end
+
   def handle_event("toggle-status", %{"id" => id}, socket) do
     server = Servers.get_server!(id)
 
-    {:ok, server_status_updated} = Servers.toggle_status_server(server)
+    {:ok, _server_status_updated} = Servers.toggle_status_server(server)
 
-    socket = assign(socket, :selected_server, server_status_updated)
+    # So if you want to use code underneath for the selected_server
+    # comment the 1st code on the handle_info({:server_updated..." for the :selected_server
+    # socket = assign(socket, :selected_server, server_status_updated)
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:server_created, server}, socket) do
+    socket =
+      update(
+        socket,
+        :servers,
+        fn servers -> [server | servers] end
+      )
+
+    socket = put_flash(socket, :info, "A new Server #{server.name} was created!")
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:server_updated, server_status_updated}, socket) do
+    # I don't use the code for selected server of the teacher because,
+    # I was using the selected_server on the event "toggle-status" and worked.
+    # So if you want to use code underneath for the selected_server
+    # then comment the assign select server of the event "toggle-status"
+
+    # If the updated server is the selected server,
+    # assign it so the status button is re-rendered:
+    socket =
+      if server_status_updated.id == socket.assigns.selected_server.id do
+        assign(socket, selected_server: server_status_updated)
+      else
+        socket
+      end
 
     # Three ways to update the server's red/green
     # status indicator in the sidebar:
@@ -142,34 +177,7 @@ defmodule RldLiveViewStudioWeb.ServersLive do
 
     # 3. Here's another way to do the same thing without
     # having to assign the servers back to the socket:
-    # socket =
-    #   update(socket, :servers, fn servers ->
-    #     for s <- servers do
-    #       if s.id == server_status_updated.id, do: server_status_updated, else: s
-    #     end
-    #   end)
 
-    {:noreply, socket}
-  end
-
-  def handle_event("drink", _, socket) do
-    {:noreply, update(socket, :coffees, &(&1 + 1))}
-  end
-
-  def handle_info({:server_created, server}, socket) do
-    socket =
-      update(
-        socket,
-        :servers,
-        fn servers -> [server | servers] end
-      )
-
-    socket = put_flash(socket, :info, "A new Server #{server.name} was created!")
-
-    {:noreply, socket}
-  end
-
-  def handle_info({:server_status_updated, server_status_updated}, socket) do
     socket =
       update(socket, :servers, fn servers ->
         for s <- servers do
