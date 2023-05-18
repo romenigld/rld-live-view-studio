@@ -5,6 +5,10 @@ defmodule RldLiveViewStudioWeb.ServersLive do
   alias RldLiveViewStudioWeb.ServerFormComponent
 
   def mount(_params, _session, socket) do
+    if connected?(socket) do
+      Servers.subscribe()
+    end
+
     servers = Servers.list_servers()
 
     socket =
@@ -116,12 +120,7 @@ defmodule RldLiveViewStudioWeb.ServersLive do
   def handle_event("toggle-status", %{"id" => id}, socket) do
     server = Servers.get_server!(id)
 
-    # Rather than using the function 'change_server_status/1'.
-    # You could update the server's status to the opposite of its current status by doing this:
-    # new_status = if server.status == "up", do: "down", else: "up"
-
-    {:ok, server_status_updated} =
-      Servers.update_server(server, %{status: change_server_status(server.status)})
+    {:ok, server_status_updated} = Servers.toggle_status_server(server)
 
     socket = assign(socket, :selected_server, server_status_updated)
 
@@ -143,6 +142,34 @@ defmodule RldLiveViewStudioWeb.ServersLive do
 
     # 3. Here's another way to do the same thing without
     # having to assign the servers back to the socket:
+    # socket =
+    #   update(socket, :servers, fn servers ->
+    #     for s <- servers do
+    #       if s.id == server_status_updated.id, do: server_status_updated, else: s
+    #     end
+    #   end)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("drink", _, socket) do
+    {:noreply, update(socket, :coffees, &(&1 + 1))}
+  end
+
+  def handle_info({:server_created, server}, socket) do
+    socket =
+      update(
+        socket,
+        :servers,
+        fn servers -> [server | servers] end
+      )
+
+    socket = put_flash(socket, :info, "A new Server #{server.name} was created!")
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:server_status_updated, server_status_updated}, socket) do
     socket =
       update(socket, :servers, fn servers ->
         for s <- servers do
@@ -152,30 +179,4 @@ defmodule RldLiveViewStudioWeb.ServersLive do
 
     {:noreply, socket}
   end
-
-  def handle_event("drink", _, socket) do
-    {:noreply, update(socket, :coffees, &(&1 + 1))}
-  end
-
-  def handle_info({ServerFormComponent, :server_created, server}, socket) do
-    socket =
-      update(
-        socket,
-        :servers,
-        fn servers -> [server | servers] end
-      )
-
-    socket = put_flash(socket, :info, "Server created successfully!")
-    socket = push_patch(socket, to: ~p"/servers/#{server}")
-
-    {:noreply, socket}
-  end
-
-  def handle_info({ServerFormComponent, :server_form_error, msg}, socket) do
-    socket = put_flash(socket, :error, msg)
-    {:noreply, socket}
-  end
-
-  defp change_server_status("up"), do: "down"
-  defp change_server_status("down"), do: "up"
 end

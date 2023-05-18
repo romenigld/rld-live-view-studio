@@ -5,8 +5,33 @@ defmodule RldLiveViewStudio.Servers do
 
   import Ecto.Query, warn: false
   alias RldLiveViewStudio.Repo
-
   alias RldLiveViewStudio.Servers.Server
+
+  @pubsub RldLiveViewStudio.PubSub
+  @topic inspect(__MODULE__)
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(@pubsub, @topic)
+  end
+
+  def broadcast({:ok, server}, tag) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      @topic,
+      {tag, server}
+    )
+
+    {:ok, server}
+  end
+
+  def broadcast({:error, _changeset} = error, _tag), do: error
+
+  def toggle_status_server(%Server{} = server) do
+    new_status = if server.status == "up", do: "down", else: "up"
+
+    update_server(server, %{status: new_status})
+    |> broadcast(:server_status_updated)
+  end
 
   @doc """
   Returns the list of servers.
@@ -53,6 +78,7 @@ defmodule RldLiveViewStudio.Servers do
     %Server{}
     |> Server.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:server_created)
   end
 
   @doc """
