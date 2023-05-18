@@ -70,8 +70,6 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
     volunteer = Volunteers.get_volunteer!(id)
     {:ok, _} = Volunteers.delete_volunteer(volunteer)
 
-    socket = stream_delete(socket, :volunteers, volunteer)
-
     {:noreply, socket}
   end
 
@@ -96,6 +94,14 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
         :volunteers,
         volunteer
       )
+
+    {:noreply, socket}
+  end
+
+  def handle_info({:volunteer_deleted, volunteer}, socket) do
+    socket = put_flash(socket, :info, "The volunteer #{volunteer.name} was deleted!")
+    socket = update(socket, :count, &(&1 - 1))
+    socket = stream_delete(socket, :volunteers, volunteer)
 
     {:noreply, socket}
   end

@@ -111,7 +111,9 @@ defmodule RldLiveViewStudio.Volunteers do
 
   """
   def delete_volunteer(%Volunteer{} = volunteer) do
-    Repo.delete(volunteer)
+    volunteer
+    |> Repo.delete()
+    |> broadcast(:volunteer_deleted)
   end
 
   @doc """
