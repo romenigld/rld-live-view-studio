@@ -38,13 +38,11 @@ defmodule RldLiveViewStudioWeb.ServerFormComponent do
   def handle_event("save", %{"server" => server_params}, socket) do
     case Servers.create_server(server_params) do
       {:ok, server} ->
-        send(self(), {__MODULE__, :server_created, server})
+        socket = push_patch(socket, to: ~p"/servers/#{server}")
 
         {:noreply, socket}
 
       {:error, changeset} ->
-        send(self(), {__MODULE__, :server_form_error, "Server form has some error!"})
-
         socket = assign(socket, :form, to_form(changeset))
 
         {:noreply, socket}

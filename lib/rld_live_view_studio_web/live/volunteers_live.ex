@@ -4,6 +4,10 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
   alias RldLiveViewStudioWeb.VolunteerFormComponent
 
   def mount(_params, _session, socket) do
+    if connected?(socket) do
+      Volunteers.subscribe()
+    end
+
     volunteers = Volunteers.list_volunteers()
 
     socket =
@@ -66,16 +70,24 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
     volunteer = Volunteers.get_volunteer!(id)
     {:ok, _} = Volunteers.delete_volunteer(volunteer)
 
-    socket = stream_delete(socket, :volunteers, volunteer)
-
     {:noreply, socket}
   end
 
   def handle_event("toggle-status", %{"id" => id}, socket) do
     volunteer = Volunteers.get_volunteer!(id)
 
-    {:ok, volunteer} = Volunteers.toggle_status_volunteer(volunteer)
+    {:ok, _volunteer} = Volunteers.toggle_status_volunteer(volunteer)
 
+    {:noreply, socket}
+  end
+
+  def handle_info({:volunteer_created, volunteer}, socket) do
+    socket = put_flash(socket, :info, "A new volunteer was created!")
+    socket = update(socket, :count, &(&1 + 1))
+    {:noreply, stream_insert(socket, :volunteers, volunteer, at: 0)}
+  end
+
+  def handle_info({:volunteer_updated, volunteer}, socket) do
     socket =
       stream_insert(
         socket,
@@ -86,14 +98,11 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
     {:noreply, socket}
   end
 
-  def handle_info({VolunteerFormComponent, :volunteer_created, volunteer}, socket) do
-    socket = put_flash(socket, :info, "Volunteer successfully checked in!")
-    socket = update(socket, :count, &(&1 + 1))
-    {:noreply, stream_insert(socket, :volunteers, volunteer, at: 0)}
-  end
+  def handle_info({:volunteer_deleted, volunteer}, socket) do
+    socket = put_flash(socket, :info, "The volunteer #{volunteer.name} was deleted!")
+    socket = update(socket, :count, &(&1 - 1))
+    socket = stream_delete(socket, :volunteers, volunteer)
 
-  def handle_info({VolunteerFormComponent, :volunteer_form_error, message}, socket) do
-    socket = put_flash(socket, :error, message)
     {:noreply, socket}
   end
 end

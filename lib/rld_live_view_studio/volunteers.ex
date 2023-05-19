@@ -8,6 +8,25 @@ defmodule RldLiveViewStudio.Volunteers do
 
   alias RldLiveViewStudio.Volunteers.Volunteer
 
+  @pubsub RldLiveViewStudio.PubSub
+  @topic inspect(__MODULE__)
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(@pubsub, @topic)
+  end
+
+  def broadcast({:ok, volunteer}, tag) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      @topic,
+      {tag, volunteer}
+    )
+
+    {:ok, volunteer}
+  end
+
+  def broadcast({:error, _changeset} = error, _tag), do: error
+
   def toggle_status_volunteer(%Volunteer{} = volunteer) do
     update_volunteer(volunteer, %{checked_out: !volunteer.checked_out})
   end
@@ -57,6 +76,7 @@ defmodule RldLiveViewStudio.Volunteers do
     %Volunteer{}
     |> Volunteer.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:volunteer_created)
   end
 
   @doc """
@@ -75,6 +95,7 @@ defmodule RldLiveViewStudio.Volunteers do
     volunteer
     |> Volunteer.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:volunteer_updated)
   end
 
   @doc """
@@ -90,7 +111,9 @@ defmodule RldLiveViewStudio.Volunteers do
 
   """
   def delete_volunteer(%Volunteer{} = volunteer) do
-    Repo.delete(volunteer)
+    volunteer
+    |> Repo.delete()
+    |> broadcast(:volunteer_deleted)
   end
 
   @doc """
