@@ -122,11 +122,11 @@ defmodule RldLiveViewStudioWeb.ServersLive do
   def handle_event("toggle-status", %{"id" => id}, socket) do
     server = Servers.get_server!(id)
 
-    {:ok, _server_status_updated} = Servers.toggle_status_server(server)
+    {:ok, server_status_updated} = Servers.toggle_status_server(server)
 
     # So if you want to use code underneath for the selected_server
     # comment the 1st code on the handle_info({:server_updated..." for the :selected_server
-    # socket = assign(socket, :selected_server, server_status_updated)
+    socket = assign(socket, :selected_server, server_status_updated)
 
     {:noreply, socket}
   end
@@ -152,12 +152,12 @@ defmodule RldLiveViewStudioWeb.ServersLive do
 
     # If the updated server is the selected server,
     # assign it so the status button is re-rendered:
-    socket =
-      if server_status_updated.id == socket.assigns.selected_server.id do
-        assign(socket, selected_server: server_status_updated)
-      else
-        socket
-      end
+    # socket =
+    #   if server_status_updated.id == socket.assigns.selected_server.id do
+    #     assign(socket, selected_server: server_status_updated)
+    #   else
+    #     socket
+    #   end
 
     # Three ways to update the server's red/green
     # status indicator in the sidebar:
