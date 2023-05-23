@@ -10,7 +10,7 @@ defmodule RldLiveViewStudioWeb.Router do
     plug(:put_root_layout, {RldLiveViewStudioWeb.Layouts, :root})
     plug(:protect_from_forgery)
     plug(:put_secure_browser_headers)
-    plug(:fetch_current_user)
+    plug :fetch_current_user
   end
 
   pipeline :api do
@@ -20,7 +20,7 @@ defmodule RldLiveViewStudioWeb.Router do
   scope "/", RldLiveViewStudioWeb do
     pipe_through([:browser, :require_authenticated_user])
 
-    live("/topsecret", TopSecretLive)
+    live "/topsecret", TopSecretLive
   end
 
   scope "/", RldLiveViewStudioWeb do
