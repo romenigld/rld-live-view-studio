@@ -1,6 +1,8 @@
 defmodule RldLiveViewStudioWeb.BingoLive do
   use RldLiveViewStudioWeb, :live_view
 
+  on_mount({RldLiveViewStudioWeb.UserAuth, :ensure_authenticated})
+
   def mount(_params, _session, socket) do
     if connected?(socket) do
       :timer.send_interval(3000, self(), :tick)
@@ -23,6 +25,8 @@ defmodule RldLiveViewStudioWeb.BingoLive do
         <%= @number %>
       </div>
     </div>
+
+    <h2>Current User: <%= @current_user.id |> Integer.to_string() %> - <%= @current_user.email %></h2>
     """
   end
 

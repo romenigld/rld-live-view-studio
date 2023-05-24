@@ -78,6 +78,9 @@ defmodule RldLiveViewStudioWeb.ServersLive do
             <.link navigate={~p"/light"}>
               Adjust Lights
             </.link>
+            <.link navigate={~p"/topsecret"}>
+              Top Secret
+            </.link>
           </div>
         </div>
       </div>
