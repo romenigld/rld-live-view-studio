@@ -21,6 +21,7 @@ defmodule RldLiveViewStudioWeb.Router do
     pipe_through([:browser, :require_authenticated_user])
 
     live "/topsecret", TopSecretLive
+    live "/bingo", BingoLive
   end
 
   scope "/", RldLiveViewStudioWeb do
@@ -31,7 +32,6 @@ defmodule RldLiveViewStudioWeb.Router do
     live("/light", LightLive)
     live("/sandbox", SandboxLive)
     live("/sales", SalesLive)
-    live("/bingo", BingoLive)
     live("/flights", FlightsLive)
     live("/vehicles", VehiclesLive)
     live("/boats", BoatsLive)
