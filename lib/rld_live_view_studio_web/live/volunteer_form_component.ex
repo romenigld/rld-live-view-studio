@@ -26,14 +26,17 @@ defmodule RldLiveViewStudioWeb.VolunteerFormComponent do
         Go for it! You'll be volunteer #<%= @count %>
       </div>
       <.form for={@form} phx-submit="save" phx-change="validate" phx-target={@myself}>
-        <.input field={@form[:name]} placeholder="Name" autocomplete="off" phx-debounce="2000" />
-        <.input
-          field={@form[:phone]}
-          type="tel"
-          placeholder="Phone"
-          autocomplete="off"
-          phx-debounce="blur"
-        />
+        <div class="while-submitting">Please wait while we save our content...</div>
+        <div class="inputs">
+          <.input field={@form[:name]} placeholder="Name" autocomplete="off" phx-debounce="2000" />
+          <.input
+            field={@form[:phone]}
+            type="tel"
+            placeholder="Phone"
+            autocomplete="off"
+            phx-debounce="blur"
+          />
+        </div>
         <.button phx-disable-with="Saving...">
           Check In
         </.button>
@@ -45,6 +48,8 @@ defmodule RldLiveViewStudioWeb.VolunteerFormComponent do
   def handle_event("save", %{"volunteer" => volunteer_params}, socket) do
     case Volunteers.create_volunteer(volunteer_params) do
       {:ok, _volunteer} ->
+        :timer.sleep(:timer.seconds(3))
+
         changeset = Volunteers.change_volunteer(%Volunteer{})
 
         {:noreply, assign(socket, :form, to_form(changeset))}
