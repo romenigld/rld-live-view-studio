@@ -20,8 +20,12 @@ defmodule RldLiveViewStudioWeb.Router do
   scope "/", RldLiveViewStudioWeb do
     pipe_through([:browser, :require_authenticated_user])
 
-    live "/topsecret", TopSecretLive
-    live "/bingo", BingoLive
+    live_session :authenticated,
+      on_mount: {RldLiveViewStudioWeb.UserAuth, :ensure_authenticated} do
+      live "/topsecret", TopSecretLive
+      live "/bingo", BingoLive
+      live "/presence", PresenceLive
+    end
   end
 
   scope "/", RldLiveViewStudioWeb do

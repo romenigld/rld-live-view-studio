@@ -1,8 +1,6 @@
 defmodule RldLiveViewStudioWeb.TopSecretLive do
   use RldLiveViewStudioWeb, :live_view
 
-  on_mount {RldLiveViewStudioWeb.UserAuth, :ensure_authenticated}
-
   def mount(_params, _session, socket) do
     {:ok, socket}
   end
