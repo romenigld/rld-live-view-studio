@@ -7,6 +7,8 @@ defmodule RldLiveViewStudioWeb.TopSecretLive do
 
   def render(assigns) do
     ~H"""
+    <%= live_render(@socket, RldLiveViewStudioWeb.LightLive, id: "light") %>
+
     <div id="top-secret">
       <img src="/images/spy.svg" />
       <div class="mission">
