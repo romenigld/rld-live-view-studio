@@ -2328,3 +2328,11 @@ span.flatpickr-weekday {
 #menu form .filters a {
   @apply inline underline text-lg cursor-pointer;
 }
+
+/* this will works whith 'phx-disable-with' when submmits the form */
+
+.while-submitting { @apply hidden; }
+.inputs { @apply block inline-flex; }
+
+.phx-submit-loading .while-submitting { @apply block bg-purple-300; }
+.phx-submit-loading .inputs { @apply hidden; }

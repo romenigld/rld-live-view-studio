@@ -1,14 +1,14 @@
 defmodule RldLiveViewStudioWeb.TopSecretLive do
   use RldLiveViewStudioWeb, :live_view
 
-  on_mount {RldLiveViewStudioWeb.UserAuth, :ensure_authenticated}
-
   def mount(_params, _session, socket) do
     {:ok, socket}
   end
 
   def render(assigns) do
     ~H"""
+    <%= live_render(@socket, RldLiveViewStudioWeb.LightLive, id: "light") %>
+
     <div id="top-secret">
       <img src="/images/spy.svg" />
       <div class="mission">
