@@ -96,8 +96,24 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
     assign(socket, :presences, presences)
   end
 
+  # An alternative way to implement remove_presences  is to use Enum.reduce with update:
+  # defp remove_presences(socket, leaves) do
+  #   simple_presence_map(leaves)
+  #   |> Enum.reduce(socket, fn {user_id, _}, socket ->
+  #     update(socket, :presences, &Map.delete(&1, user_id))
+  #   end)
+  # end
+
   defp add_presences(socket, joins) do
     presences = Map.merge(socket.assigns.presences, simple_presence_map(joins))
     assign(socket, :presences, presences)
   end
+
+  # An alternative way to implement add_presences is to use Enum.reduce with update:
+  # defp add_presences(socket, joins) do
+  #   simple_presence_map(joins)
+  #   |> Enum.reduce(socket, fn {user_id, meta}, socket ->
+  #     update(socket, :presences, &Map.put(&1, user_id, meta))
+  #   end)
+  # end
 end
