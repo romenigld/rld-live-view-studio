@@ -9,6 +9,8 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
     %{current_user: current_user} = socket.assigns
 
     if connected?(socket) do
+      Phoenix.PubSub.subscribe(RldLiveViewStudio.PubSub, @topic)
+
       {:ok, _} =
         Presence.track(self(), @topic, current_user.id, %{
           username: current_user.email |> String.split("@") |> hd(),
@@ -22,6 +24,7 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
       socket
       |> assign(:is_playing, false)
       |> assign(:presences, simple_presence_map(presences))
+      |> assign(:diff, nil)
 
     {:ok, socket}
   end
@@ -35,7 +38,7 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
   def render(assigns) do
     ~H"""
     <pre>
-      <%#= inspect(@presences, pretty: true) %>
+      <%= inspect(@diff, pretty: true) %>
     </pre>
 
     <div id="presence">
@@ -65,6 +68,14 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
 
   def handle_event("toggle-playing", _, socket) do
     socket = update(socket, :is_playing, fn playing -> !playing end)
+    {:noreply, socket}
+  end
+
+  def handle_info(%{event: "presence_diff", payload: diff}, socket) do
+    socket =
+      socket
+      |> assign(:diff, diff)
+
     {:noreply, socket}
   end
 end
