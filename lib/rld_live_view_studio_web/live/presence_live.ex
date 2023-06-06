@@ -24,7 +24,6 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
       socket
       |> assign(:is_playing, false)
       |> assign(:presences, simple_presence_map(presences))
-      |> assign(:diff, nil)
 
     {:ok, socket}
   end
@@ -38,7 +37,7 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
   def render(assigns) do
     ~H"""
     <pre>
-      <%= inspect(@diff, pretty: true) %>
+      <%#= inspect(@diff, pretty: true) %>
     </pre>
 
     <div id="presence">
@@ -74,8 +73,22 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
   def handle_info(%{event: "presence_diff", payload: diff}, socket) do
     socket =
       socket
-      |> assign(:diff, diff)
+      |> remove_presences(diff.leaves)
+      |> add_presences(diff.joins)
 
     {:noreply, socket}
+  end
+
+  defp remove_presences(socket, leaves) do
+    user_ids = Enum.map(leaves, fn {user_id, _} -> user_id end)
+
+    presences = Map.drop(socket.assigns.presences, user_ids)
+
+    assign(socket, :presences, presences)
+  end
+
+  defp add_presences(socket, joins) do
+    presences = Map.merge(socket.assigns.presences, simple_presence_map(joins))
+    assign(socket, :presences, presences)
   end
 end
