@@ -9,29 +9,22 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
     %{current_user: current_user} = socket.assigns
 
     if connected?(socket) do
-      Phoenix.PubSub.subscribe(RldLiveViewStudio.PubSub, @topic)
+      Presence.subscribe(@topic)
 
       {:ok, _} =
-        Presence.track(self(), @topic, current_user.id, %{
-          username: current_user.email |> String.split("@") |> hd(),
+        Presence.track_user(current_user, @topic, %{
           is_playing: false
         })
     end
 
-    presences = Presence.list(@topic)
+    presences = Presence.list_users(@topic)
 
     socket =
       socket
       |> assign(:is_playing, false)
-      |> assign(:presences, simple_presence_map(presences))
+      |> assign(:presences, Presence.simple_presence_map(presences))
 
     {:ok, socket}
-  end
-
-  def simple_presence_map(presences) do
-    Enum.into(presences, %{}, fn {user_id, %{metas: [meta | _]}} ->
-      {user_id, meta}
-    end)
   end
 
   def render(assigns) do
@@ -70,50 +63,15 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
 
     %{current_user: current_user} = socket.assigns
 
-    %{metas: [meta | _]} = Presence.get_by_key(@topic, current_user.id)
-
-    new_meta = %{meta | is_playing: socket.assigns.is_playing}
-
-    Presence.update(self(), @topic, current_user.id, new_meta)
+    Presence.update_user(current_user, @topic, %{
+      is_playing: socket.assigns.is_playing
+    })
 
     {:noreply, socket}
   end
 
   def handle_info(%{event: "presence_diff", payload: diff}, socket) do
-    socket =
-      socket
-      |> remove_presences(diff.leaves)
-      |> add_presences(diff.joins)
-
+    socket = Presence.handle_diff(socket, diff)
     {:noreply, socket}
   end
-
-  defp remove_presences(socket, leaves) do
-    user_ids = Enum.map(leaves, fn {user_id, _} -> user_id end)
-
-    presences = Map.drop(socket.assigns.presences, user_ids)
-
-    assign(socket, :presences, presences)
-  end
-
-  # An alternative way to implement remove_presences  is to use Enum.reduce with update:
-  # defp remove_presences(socket, leaves) do
-  #   simple_presence_map(leaves)
-  #   |> Enum.reduce(socket, fn {user_id, _}, socket ->
-  #     update(socket, :presences, &Map.delete(&1, user_id))
-  #   end)
-  # end
-
-  defp add_presences(socket, joins) do
-    presences = Map.merge(socket.assigns.presences, simple_presence_map(joins))
-    assign(socket, :presences, presences)
-  end
-
-  # An alternative way to implement add_presences is to use Enum.reduce with update:
-  # defp add_presences(socket, joins) do
-  #   simple_presence_map(joins)
-  #   |> Enum.reduce(socket, fn {user_id, meta}, socket ->
-  #     update(socket, :presences, &Map.put(&1, user_id, meta))
-  #   end)
-  # end
 end
