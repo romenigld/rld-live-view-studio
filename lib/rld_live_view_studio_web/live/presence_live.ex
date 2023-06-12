@@ -48,11 +48,12 @@ defmodule RldLiveViewStudioWeb.PresenceLive do
         </ul>
       </div>
       <div class="video" phx-click="toggle-playing">
-        <%= if @is_playing do %>
+        <.icon name={if(@is_playing, do: "hero-pause-circle-solid", else: "hero-play-circle-solid")} />
+        <%!-- <%= if @is_playing do %>
           <.icon name="hero-pause-circle-solid" />
         <% else %>
           <.icon name="hero-play-circle-solid" />
-        <% end %>
+        <% end %> --%>
       </div>
     </div>
     """
