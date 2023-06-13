@@ -25,7 +25,7 @@ defmodule RldLiveViewStudioWeb.Router do
       live "/topsecret", TopSecretLive
       live "/bingo", BingoLive
       live "/presence", PresenceLive
-      live "music", MusicLive
+      live "/music", MusicLive
     end
   end
 
