@@ -48,7 +48,61 @@ defmodule RldLiveViewStudioWeb.MusicLive do
         </ul>
       </div>
       <div class="video" phx-click="toggle-playing">
-        <.icon name={if(@is_playing, do: "hero-pause-circle-solid", else: "hero-play-circle-solid")} />
+        <%!--
+          For work the buttons(Play, Pause, Vol +, Vol -)
+          hide the built-in browser UI (by removing the controls attribute from audio)
+          and instead build your own interface and control the playback using Javascript
+        --%>
+        <audio
+          id="player"
+          src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9473/new_year_dubstep_minimix.ogg"
+        >
+        </audio>
+        <div>
+          <button onclick="document.getElementById('player').play()">Play</button>
+          <button onclick="document.getElementById('player').pause()">Pause</button>
+        </div>
+
+        <%= if @is_playing do %>
+          <button onclick="document.getElementById('player').pause()">
+            <.icon name="hero-pause-circle-solid" />
+          </button>
+        <% else %>
+          <button onclick="document.getElementById('player').play()">
+            <.icon name="hero-play-circle-solid" />
+          </button>
+        <% end %>
+
+        <%!--
+          This audio don't worked with the Presence because don't
+          hide the built-in browser UI (it has the controls attribute
+          from audio like: controls, loop and autoplay)
+        --%>
+        <div class="container-audio">
+          <figure>
+            <figcaption>Music Techno</figcaption>
+            <audio controls loop autoplay>
+              <source
+                src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9473/new_year_dubstep_minimix.ogg"
+                type="audio/ogg"
+              /> Your browser dose not Support the audio Tag
+            </audio>
+          </figure>
+        </div>
+      </div>
+      <div class="volume">
+        <button
+          class="bg-orange-400 rounded-full"
+          onclick="document.getElementById('player').volume += 0.1"
+        >
+          Vol +
+        </button>
+        <button
+          class="rounded-full bg-lime-200"
+          onclick="document.getElementById('player').volume -= 0.1"
+        >
+          Vol -
+        </button>
       </div>
     </div>
     """
