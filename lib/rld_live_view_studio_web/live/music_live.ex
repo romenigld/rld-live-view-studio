@@ -58,10 +58,6 @@ defmodule RldLiveViewStudioWeb.MusicLive do
           src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9473/new_year_dubstep_minimix.ogg"
         >
         </audio>
-        <div>
-          <button onclick="document.getElementById('player').play()">Play</button>
-          <button onclick="document.getElementById('player').pause()">Pause</button>
-        </div>
 
         <%= if @is_playing do %>
           <button onclick="document.getElementById('player').pause()">
@@ -80,7 +76,9 @@ defmodule RldLiveViewStudioWeb.MusicLive do
         --%>
         <div class="container-audio">
           <figure>
-            <figcaption>Music Techno</figcaption>
+            <figcaption>
+              ⇣ This audio begins automatically and for the other buttons play, pause icons(left) and volumes work properly with the presence you need to stop it ↓
+            </figcaption>
             <audio controls loop autoplay>
               <source
                 src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9473/new_year_dubstep_minimix.ogg"
@@ -90,19 +88,24 @@ defmodule RldLiveViewStudioWeb.MusicLive do
           </figure>
         </div>
       </div>
-      <div class="volume">
-        <button
-          class="bg-orange-400 rounded-full"
-          onclick="document.getElementById('player').volume += 0.1"
-        >
-          Vol +
-        </button>
-        <button
-          class="rounded-full bg-lime-200"
-          onclick="document.getElementById('player').volume -= 0.1"
-        >
-          Vol -
-        </button>
+      <div class="controls">
+        <figure>
+          <figcaption>
+            ⇣ This volumes just works with the 1st(icon) audio, which works properly with the Presence ↓
+          </figcaption>
+          <button
+            class="m-6 font-bold text-center bg-orange-400 border-8 rounded-full"
+            onclick="document.getElementById('player').volume += 0.1"
+          >
+            Volume ✚
+          </button>
+          <button
+            class="m-6 font-bold text-center border-8 rounded-full bg-lime-200"
+            onclick="document.getElementById('player').volume -= 0.1"
+          >
+            Volume ⁃
+          </button>
+        </figure>
       </div>
     </div>
     """
