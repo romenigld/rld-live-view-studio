@@ -14,6 +14,8 @@ defmodule RldLiveViewStudio.Application do
       RldLiveViewStudio.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: RldLiveViewStudio.PubSub},
+      # Start the Presence
+      RldLiveViewStudioWeb.Presence,
       # Start Finch
       {Finch, name: RldLiveViewStudio.Finch},
       # Start the Endpoint (http/https)
