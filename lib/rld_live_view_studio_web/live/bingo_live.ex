@@ -1,15 +1,33 @@
 defmodule RldLiveViewStudioWeb.BingoLive do
   use RldLiveViewStudioWeb, :live_view
+  alias RldLiveViewStudioWeb.Presence
+
+  alias RldLiveViewStudioWeb.Presence
+
+  @topic "users:playing-bingo"
 
   def mount(_params, _session, socket) do
+    %{current_user: current_user} = socket.assigns
+
     if connected?(socket) do
+      Presence.subscribe(@topic)
+
+      {:ok, _} =
+        Presence.track_user(current_user, @topic, %{
+          # arrived_at: System.system_time(:second)
+          arrived_at: Timex.now() |> Timex.format!("%H:%M", :strftime)
+        })
+
       :timer.send_interval(3000, self(), :tick)
     end
+
+    presences = Presence.list_users(@topic)
 
     socket =
       assign(socket,
         number: nil,
-        numbers: all_numbers()
+        numbers: all_numbers(),
+        presences: Presence.simple_presence_map(presences)
       )
 
     {:ok, socket}
@@ -18,18 +36,41 @@ defmodule RldLiveViewStudioWeb.BingoLive do
   def render(assigns) do
     ~H"""
     <h1>Bingo Boss 📢</h1>
+    <h3>
+      <%= @current_user.email %>
+    </h3>
     <div id="bingo">
+      <div class="users">
+        <ul>
+          <.presence :for={{_user_id, meta} <- @presences} meta={meta} />
+        </ul>
+      </div>
       <div class="number">
         <%= @number %>
       </div>
     </div>
+    """
+  end
 
-    <h2>Current User: <%= @current_user.id |> Integer.to_string() %> - <%= @current_user.email %></h2>
+  def presence(assigns) do
+    ~H"""
+    <li>
+      <span class="username">
+        <%= @meta.username %>
+      </span>
+      <span class="timestamp">
+        <%= @meta.arrived_at %>
+      </span>
+    </li>
     """
   end
 
   def handle_info(:tick, socket) do
     {:noreply, pick(socket)}
+  end
+
+  def handle_info(%{event: "presence_diff", payload: diff}, socket) do
+    {:noreply, Presence.handle_diff(socket, diff)}
   end
 
   # Assigns the next random bingo number, removing it
