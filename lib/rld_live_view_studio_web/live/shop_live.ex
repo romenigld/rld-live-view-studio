@@ -24,8 +24,9 @@ defmodule RldLiveViewStudioWeb.ShopLive do
     {:noreply, assign(socket, :cart, cart)}
   end
 
-  def toggle_cart do
-    JS.toggle(
+  def toggle_cart(js \\ %JS{}) do
+    js
+    |> JS.toggle(
       to: "#cart",
       in: {
         "ease-in-out duration-300",
