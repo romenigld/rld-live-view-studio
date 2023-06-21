@@ -3,7 +3,7 @@
   <div class="nav">
     <button
       :if={Enum.count(@cart) > 0}
-      phx-click={toggle_cart()}
+      phx-click={toggle_cart() |> JS.transition("shake", to: "#cart-button", time: 500)}
       id="cart-button"
       phx-mounted={JS.transition("shake", time: 500)}
     >
