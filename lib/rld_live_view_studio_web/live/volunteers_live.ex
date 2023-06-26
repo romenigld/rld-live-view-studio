@@ -48,7 +48,21 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
         <%= @volunteer.phone %>
       </div>
       <div class="status">
-        <button phx-click="toggle-status" phx-value-id={@volunteer.id} phx-disable-with="Saving...">
+        <%!-- <button phx-click="toggle-status" phx-value-id={@volunteer.id} phx-disable-with="Saving...">
+          <%= if @volunteer.checked_out,
+            do: "Check In",
+            else: "Check Out" %>
+        </button> --%>
+        <button
+          phx-click={
+            JS.push("toggle-status", value: %{id: @volunteer.id})
+            |> JS.transition("shake",
+              to: "##{@id}",
+              time: 500
+            )
+          }
+          phx-disable-with="Saving..."
+        >
           <%= if @volunteer.checked_out,
             do: "Check In",
             else: "Check Out" %>
@@ -75,7 +89,7 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
 
   def handle_event("toggle-status", %{"id" => id}, socket) do
     # :timer.sleep(:timer.seconds(2))
-    Process.sleep(3000)
+    Process.sleep(1000)
 
     volunteer = Volunteers.get_volunteer!(id)
 
