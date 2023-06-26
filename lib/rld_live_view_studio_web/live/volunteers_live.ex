@@ -68,11 +68,24 @@ defmodule RldLiveViewStudioWeb.VolunteersLive do
             else: "Check Out" %>
         </button>
       </div>
-      <.link
+      <%!-- <.link
         class="delete"
         phx-click="delete"
         phx-value-id={@volunteer.id}
         data-confirm="Are you sure?"
+      >
+        <.icon name="hero-trash-solid" />
+      </.link> --%>
+      <.link
+        class="delete"
+        data-confirm="Are you sure?"
+        phx-click={
+          JS.push("delete", value: %{id: @volunteer.id})
+          |> JS.hide(
+            to: "##{@id}",
+            transition: "ease-linear duration-1000 scale-150"
+          )
+        }
       >
         <.icon name="hero-trash-solid" />
       </.link>
