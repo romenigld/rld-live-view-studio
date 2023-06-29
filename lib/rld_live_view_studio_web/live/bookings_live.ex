@@ -20,9 +20,11 @@ defmodule RldLiveViewStudioWeb.BookingsLive do
     <h1>Bookings</h1>
     <div id="bookings">
       <div id="booking-calendar">
-        <div class="placeholder">
-          calendar here
-        </div>
+        <ul>
+          <li :for={booking <- @bookings}>
+            <%= format_date(booking.from) %> -<%= format_date(booking.to) %>
+          </li>
+        </ul>
       </div>
       <div :if={@selected_dates} class="details">
         <div>
