@@ -8,10 +8,7 @@ defmodule RldLiveViewStudioWeb.BookingsLive do
     {:ok,
      assign(socket,
        bookings: Bookings.list_bookings(),
-       selected_dates: %{
-         from: Bookings.add_days(1),
-         to: Bookings.add_days(3)
-       }
+       selected_dates: nil
      )}
   end
 
@@ -19,13 +16,7 @@ defmodule RldLiveViewStudioWeb.BookingsLive do
     ~H"""
     <h1>Bookings</h1>
     <div id="bookings">
-      <div id="booking-calendar">
-        <ul>
-          <li :for={booking <- @bookings}>
-            <%= format_date(booking.from) %> -<%= format_date(booking.to) %>
-          </li>
-        </ul>
-      </div>
+      <div id="booking-calendar" phx-hook="Calendar"></div>
       <div :if={@selected_dates} class="details">
         <div>
           <span class="date">
