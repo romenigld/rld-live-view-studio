@@ -21,12 +21,21 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
+import flatpickr from "../vendor/flatpickr"
 
 let Hooks = {}
 
 Hooks.Calendar = {
   mounted() {
-    console.log("Hook mounted!", this.el);
+    this.pickr = flatpickr(this.el, {
+      inline: true,
+      mode: "range",
+      showMonths: 2
+    })
+  },
+
+  destroyed() {
+    this.pickr.destroy()
   }
 }
 
