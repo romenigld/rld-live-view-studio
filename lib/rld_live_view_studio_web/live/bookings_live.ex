@@ -65,6 +65,7 @@ defmodule RldLiveViewStudioWeb.BookingsLive do
       socket
       |> assign(:bookings, [selected_dates | bookings])
       |> assign(:selected_dates, nil)
+      |> push_event("add-unavailable-dates", selected_dates)
 
     {:noreply, socket}
   end
