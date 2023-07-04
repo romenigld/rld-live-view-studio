@@ -17,12 +17,7 @@ defmodule RldLiveViewStudioWeb.BookingsLive do
     <h1>Bookings</h1>
     <div id="bookings">
       <div phx-update="ignore" id="wrapper">
-        <div
-          id="booking-calendar"
-          phx-hook="Calendar"
-          data-unavailable-dates={Jason.encode!(@bookings)}
-        >
-        </div>
+        <div id="booking-calendar" phx-hook="Calendar"></div>
       </div>
       <div :if={@selected_dates} class="details">
         <div>
@@ -56,6 +51,10 @@ defmodule RldLiveViewStudioWeb.BookingsLive do
          to: parse_date(to)
        }
      )}
+  end
+
+  def handle_event("unavailable-dates", _params, socket) do
+    {:reply, %{dates: socket.assigns.bookings}, socket}
   end
 
   def handle_event("book-selected-dates", _, socket) do
