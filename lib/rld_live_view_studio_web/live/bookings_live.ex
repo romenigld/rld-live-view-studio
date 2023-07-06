@@ -87,7 +87,7 @@ defmodule RldLiveViewStudioWeb.BookingsLive do
   def parse_date(date_string) do
     date_string
     |> Timex.parse!("{ISO:Extended}")
-    |> Timex.Timezone.convert(:local)
+    # |> Timex.Timezone.convert(:local)
     |> Timex.to_date()
   end
 end
