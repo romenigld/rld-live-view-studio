@@ -5,6 +5,11 @@ defmodule RldLiveViewStudioWeb.BookingsLive do
   import Number.Currency
 
   def mount(_params, _session, socket) do
+    if connected?(socket) do
+      %{"timezone" => tz} = get_connect_params(socket)
+      IO.inspect(tz, label: "TIMEZONE")
+    end
+
     {:ok,
      assign(socket,
        bookings: Bookings.list_bookings(),
