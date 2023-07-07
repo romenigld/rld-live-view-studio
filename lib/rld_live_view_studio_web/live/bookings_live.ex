@@ -4,11 +4,21 @@ defmodule RldLiveViewStudioWeb.BookingsLive do
   alias RldLiveViewStudio.Bookings
   import Number.Currency
 
+  # if multiple LiveViews needed to know the current user's timezone,
+  # you could define an on_mount callback that's used by a live session:
+  def on_mount(:assign_time_zone, _params, _session, socket) do
+    %{"timezone" => tz} = get_connect_params(socket)
+
+    {:cont, assign(socket, :time_zone, tz |> IO.inspect(label: "TIMEZONE"))}
+  end
+
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      %{"timezone" => tz} = get_connect_params(socket)
-      IO.inspect(tz, label: "TIMEZONE")
-    end
+    # when a LiveView is in the connected state, you can call get_connect_params to get the params map
+    # from the socket and use pattern matching to extract the value of the "timezone" parameter:
+    # if connected?(socket) do
+    #   %{"timezone" => tz} = get_connect_params(socket)
+    #   IO.inspect(tz, label: "TIMEZONE")
+    # end
 
     {:ok,
      assign(socket,
