@@ -35,6 +35,7 @@ defmodule RldLiveViewStudioWeb.VolunteerFormComponent do
             placeholder="Phone"
             autocomplete="off"
             phx-debounce="blur"
+            phx-hook="PhoneNumber"
           />
         </div>
         <.button phx-disable-with="Saving...">
