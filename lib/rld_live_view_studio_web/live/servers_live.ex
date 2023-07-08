@@ -75,6 +75,13 @@ defmodule RldLiveViewStudioWeb.ServersLive do
             <.server server={@selected_server} />
           <% end %>
           <div class="links">
+            <a
+              id={"#{@selected_server.id}-clipboard"}
+              data-content={url(@socket, ~p"/servers/?id=#{@selected_server}")}
+              phx-hook="Clipboard"
+            >
+              Copy Link
+            </a>
             <.link navigate={~p"/light"}>
               Adjust Lights
             </.link>

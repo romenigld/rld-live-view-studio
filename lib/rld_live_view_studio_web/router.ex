@@ -22,10 +22,10 @@ defmodule RldLiveViewStudioWeb.Router do
 
     live_session :authenticated,
       on_mount: {RldLiveViewStudioWeb.UserAuth, :ensure_authenticated} do
-      live "/topsecret", TopSecretLive
-      live "/bingo", BingoLive
-      live "/presence", PresenceLive
-      live "/music", MusicLive
+      live("/topsecret", TopSecretLive)
+      live("/bingo", BingoLive)
+      live("/presence", PresenceLive)
+      live("/music", MusicLive)
     end
   end
 
@@ -48,7 +48,8 @@ defmodule RldLiveViewStudioWeb.Router do
     live("/donations", DonationsLive)
     live("/pizza-orders", PizzaOrdersLive)
     live("/volunteers", VolunteersLive)
-    live "/shop", ShopLive
+    live("/shop", ShopLive)
+    live("/bookings", BookingsLive)
   end
 
   # Other scopes may use custom stacks.

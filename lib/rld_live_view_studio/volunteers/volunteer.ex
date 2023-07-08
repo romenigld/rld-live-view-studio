@@ -10,7 +10,11 @@ defmodule RldLiveViewStudio.Volunteers.Volunteer do
     timestamps()
   end
 
-  @phone ~r/^\d{3}[\s-.]?\d{3}[\s-.]?\d{4}$/
+  # @phone ~r/^\d{3}[\s-.]?\d{3}[\s-.]?\d{4}$/
+  # USA
+  # @phone ~r/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/
+  # España
+  @phone ~r/^(\+34\s)?\(?\d{3}\)?[\s.-]?\d{2}[\s.-]?\d{2}[\s.-]?\d{2}$/
 
   @doc false
   def changeset(volunteer, attrs) do

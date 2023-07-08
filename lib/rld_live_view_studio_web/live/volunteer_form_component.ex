@@ -32,9 +32,10 @@ defmodule RldLiveViewStudioWeb.VolunteerFormComponent do
           <.input
             field={@form[:phone]}
             type="tel"
-            placeholder="Phone"
+            placeholder="ES Phone xxx xx xx xx"
             autocomplete="off"
             phx-debounce="blur"
+            phx-hook="PhoneNumber"
           />
         </div>
         <.button phx-disable-with="Saving...">
