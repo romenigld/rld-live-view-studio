@@ -25,10 +25,12 @@ import flatpickr from "../vendor/flatpickr"
 // import Hooks from "./hooks"
 import Calendar from "./date-picker"
 import PhoneNumber from "./phone-number"
+import Clipboard from "./copy-to-clipboard"
 
 let Hooks = {
   Calendar: Calendar,
-  PhoneNumber: PhoneNumber
+  PhoneNumber: PhoneNumber,
+  Clipboard: Clipboard
 }
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
