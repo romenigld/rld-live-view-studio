@@ -54,6 +54,16 @@ defmodule RldLiveViewStudioWeb.DonationsLive do
     """
   end
 
+  def handle_event("paginate", %{"key" => "ArrowLeft"}, socket) do
+    {:noreply, goto_page(socket, socket.assigns.options.page - 1)}
+  end
+
+  def handle_event("paginate", %{"key" => "ArrowRight"}, socket) do
+    {:noreply, goto_page(socket, socket.assigns.options.page + 1)}
+  end
+
+  def handle_event("paginate", _, socket), do: {:noreply, socket}
+
   def handle_event("select-per-page", %{"per-page" => per_page}, socket) do
     params = %{socket.assigns.options | per_page: per_page}
 
@@ -116,4 +126,23 @@ defmodule RldLiveViewStudioWeb.DonationsLive do
       end
     end
   end
+
+  # Alternate version if you want to generate links for all pages:
+  #
+  # def pages(options, donation_count) do
+  #   page_count = ceil(donation_count / options.per_page)
+  #
+  #   for page_number <- 1..page_count//1 do
+  #     current_page? = page_number == options.page
+  #     {page_number, current_page?}
+  #   end
+  # end
+
+  defp goto_page(socket, page) when page > 0 do
+    params = %{socket.assigns.options | page: page}
+
+    push_patch(socket, to: ~p"/donations?#{params}")
+  end
+
+  defp goto_page(socket, _page), do: socket
 end
