@@ -50,6 +50,7 @@ defmodule RldLiveViewStudioWeb.Router do
     live("/volunteers", VolunteersLive)
     live("/shop", ShopLive)
     live("/bookings", BookingsLive)
+    live "/juggling", JugglingLive
   end
 
   # Other scopes may use custom stacks.
