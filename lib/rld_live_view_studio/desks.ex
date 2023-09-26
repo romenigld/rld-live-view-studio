@@ -5,8 +5,26 @@ defmodule RldLiveViewStudio.Desks do
 
   import Ecto.Query, warn: false
   alias RldLiveViewStudio.Repo
-
   alias RldLiveViewStudio.Desks.Desk
+
+  @pubsub RldLiveViewStudio.PubSub
+  @topic inspect(__MODULE__)
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(@pubsub, @topic)
+  end
+
+  def broadcast({:ok, desk}, tag) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      @topic,
+      {tag, desk}
+    )
+
+    {:ok, desk}
+  end
+
+  def broadcast({:error, _reason} = error, _tag), do: error
 
   @doc """
   Returns the list of desks.
@@ -54,20 +72,6 @@ defmodule RldLiveViewStudio.Desks do
     |> Desk.changeset(attrs)
     |> Repo.insert()
     |> broadcast(:desk_created)
-  end
-
-  def broadcast({:ok, desk}, tag) do
-    Phoenix.PubSub.broadcast(
-      RldLiveViewStudio.PubSub,
-      "desks",
-      {tag, desk}
-    )
-  end
-
-  def broadcast({:error, _reason} = error, _tag), do: error
-
-  def subscribe do
-    Phoenix.PubSub.subscribe(RldLiveViewStudio.PubSub, "desks")
   end
 
   @doc """
