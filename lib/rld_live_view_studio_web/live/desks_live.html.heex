@@ -19,7 +19,7 @@
     </.error>
 
     <div :for={entry <- @uploads.photos.entries} class="entry">
-      <.live_img_preview entry={entry} />
+      <.live_img_preview entry={entry} width="75" />
 
       <div class="progress">
         <div class="value">
