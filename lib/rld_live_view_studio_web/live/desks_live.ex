@@ -38,6 +38,29 @@ defmodule RldLiveViewStudioWeb.DesksLive do
   end
 
   def handle_event("save", %{"desk" => params}, socket) do
+    # copy temp file to priv/static/uploads/abc-1.png
+    # URL path: /uploads/abc-1.png
+
+    photo_locations =
+      consume_uploaded_entries(socket, :photos, fn meta, entry ->
+        dest =
+          Path.join([
+            "priv",
+            "static",
+            "uploads",
+            "#{entry.uuid}-#{entry.client_name}"
+          ])
+
+        create_priv_static_uploads_folder()
+        File.cp!(meta.path, dest)
+
+        url_path = static_path(socket, "/uploads/#{Path.basename(dest)}")
+
+        {:ok, url_path}
+      end)
+
+    params = Map.put(params, "photo_locations", photo_locations)
+
     case Desks.create_desk(params) do
       {:ok, _desk} ->
         changeset = Desks.change_desk(%Desk{})
@@ -64,4 +87,13 @@ defmodule RldLiveViewStudioWeb.DesksLive do
 
   defp error_to_string(:not_accepted),
     do: "Sorry, that's not an acceptable file type."
+
+  defp create_priv_static_uploads_folder() do
+    case File.mkdir("priv/static/uploads") do
+      :ok -> IO.puts("Created The Folder 'priv/static/uploads'")
+      {:error, reason} -> IO.inspect(exist_folder?(reason))
+    end
+  end
+
+  defp exist_folder?(:eexist), do: "The folder 'priv/static/uploads' it was already created."
 end
