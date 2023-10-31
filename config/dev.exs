@@ -57,7 +57,7 @@ config :rld_live_view_studio, RldLiveViewStudioWeb.Endpoint,
 config :rld_live_view_studio, RldLiveViewStudioWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/(?!uploads).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/rld_live_view_studio_web/(controllers|live|components)/.*(ex|heex)$"
     ]
