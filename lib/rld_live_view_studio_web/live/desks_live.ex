@@ -51,7 +51,7 @@ defmodule RldLiveViewStudioWeb.DesksLive do
             "#{entry.uuid}-#{entry.client_name}"
           ])
 
-        create_priv_static_uploads_folder()
+        File.mkdir_p!("priv/static/uploads")
         File.cp!(meta.path, dest)
 
         url_path = static_path(socket, "/uploads/#{Path.basename(dest)}")
@@ -87,13 +87,4 @@ defmodule RldLiveViewStudioWeb.DesksLive do
 
   defp error_to_string(:not_accepted),
     do: "Sorry, that's not an acceptable file type."
-
-  defp create_priv_static_uploads_folder() do
-    case File.mkdir("priv/static/uploads") do
-      :ok -> IO.puts("Created The Folder 'priv/static/uploads'")
-      {:error, reason} -> IO.inspect(exist_folder?(reason))
-    end
-  end
-
-  defp exist_folder?(:eexist), do: "The folder 'priv/static/uploads' it was already created."
 end
