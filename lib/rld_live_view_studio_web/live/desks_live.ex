@@ -4,6 +4,11 @@ defmodule RldLiveViewStudioWeb.DesksLive do
   alias RldLiveViewStudio.Desks
   alias RldLiveViewStudio.Desks.Desk
 
+  # @s3_bucket "rld-praprog-liveview-2"
+  @s3_bucket "rld-liveview-uploads"
+  @s3_url "//#{@s3_bucket}.s3.amazonaws.com"
+  @s3_region "eu-west-3"
+
   def mount(_params, _session, socket) do
     if connected?(socket), do: Desks.subscribe()
 
@@ -18,7 +23,8 @@ defmodule RldLiveViewStudioWeb.DesksLive do
         :photos,
         accept: ~w(.png .jpeg .jpg),
         max_entries: 3,
-        max_file_size: 10_000_000
+        max_file_size: 10_000_000,
+        external: &presign_upload/2
       )
 
     {:ok, stream(socket, :desks, Desks.list_desks())}
@@ -38,23 +44,9 @@ defmodule RldLiveViewStudioWeb.DesksLive do
   end
 
   def handle_event("save", %{"desk" => params}, socket) do
-    # copy temp file to priv/static/uploads/abc-1.png
-    # URL path: /uploads/abc-1.png
-
     photo_locations =
-      consume_uploaded_entries(socket, :photos, fn meta, entry ->
-        dest =
-          Path.join([
-            "priv",
-            "static",
-            "uploads",
-            "#{entry.uuid}-#{entry.client_name}"
-          ])
-
-        File.mkdir_p!("priv/static/uploads")
-        File.cp!(meta.path, dest)
-
-        url_path = static_path(socket, "/uploads/#{Path.basename(dest)}")
+      consume_uploaded_entries(socket, :photos, fn _meta, entry ->
+        url_path = Path.join(@s3_url, filename(entry))
 
         {:ok, url_path}
       end)
@@ -87,4 +79,33 @@ defmodule RldLiveViewStudioWeb.DesksLive do
 
   defp error_to_string(:not_accepted),
     do: "Sorry, that's not an acceptable file type."
+
+  defp presign_upload(entry, socket) do
+    config = %{
+      region: @s3_region,
+      access_key_id: System.fetch_env!("AWS_ACCESS_KEY_ID"),
+      secret_access_key: System.fetch_env!("AWS_SECRET_ACCESS_KEY")
+    }
+
+    {:ok, fields} =
+      SimpleS3Upload.sign_form_upload(config, @s3_bucket,
+        key: filename(entry),
+        content_type: entry.client_type,
+        max_file_size: socket.assigns.uploads.photos.max_file_size,
+        expires_in: :timer.hours(1)
+      )
+
+    metadata = %{
+      uploader: "S3",
+      key: filename(entry),
+      url: @s3_url,
+      fields: fields
+    }
+
+    {:ok, metadata, socket}
+  end
+
+  defp filename(entry) do
+    "#{entry.uuid}-#{entry.client_name}"
+  end
 end

@@ -26,6 +26,7 @@ import flatpickr from "../vendor/flatpickr"
 import Calendar from "./date-picker"
 import PhoneNumber from "./phone-number"
 import Clipboard from "./copy-to-clipboard"
+import Uploaders from "./uploaders"
 
 let Hooks = {
   Calendar: Calendar,
@@ -39,6 +40,7 @@ const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
 let liveSocket = new LiveSocket("/live", Socket, {
   hooks: Hooks,
+  uploaders: Uploaders,
   params: {
     _csrf_token: csrfToken,
     timezone: timezone
